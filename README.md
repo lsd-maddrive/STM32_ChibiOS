@@ -1,6 +1,15 @@
 # STM32_ChibiOS
 Resources for ChibiOS on STM32 boards
 
+## Developers
+
+[Серых Елена](https://github.com/serykhelena)
+[Девяткин Алексей](https://github.com/KaiL4eK)
+
+## Chapters
+
+- [Как начать работу на Windows?](Startup/Eclipse_STM_settings.md)
+
 ## Useful links
 
 - [Java SE Runtime Environment](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)

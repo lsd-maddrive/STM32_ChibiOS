@@ -9,7 +9,8 @@ Resources for ChibiOS on STM32 boards
 ## Chapters
 
 - [Как начать работу на Windows?](Startup/Eclipse_STM_settings.md)
-
+- [Как начать работать с модулем HAL?](HAL_topics)
+- [А что интересного есть в модуле RT?](RT_topics)
 
 ## Useful links
 

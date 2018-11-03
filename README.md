@@ -10,8 +10,14 @@ Resources for ChibiOS on STM32 boards
 
 - [Как начать работу на Windows?](Startup/Eclipse_STM_settings.md)
 - [Начиная работу с HAL - посмотрите это!](HAL_topics/Basics.md)
-- [Как начать работать с модулем HAL?](HAL_topics)
+- [Как начать работать с модулями HAL?](HAL_topics)
+- [Примеры настройки модулей HAL](HAL_setup)
+- [Примеры использования модулей HAL](HAL_samples)
+
 - [А что интересного есть в модуле RT?](RT_topics)
+- [Примеры использования ядра RT](RT_samples)
+
+- [Примеры использования модулей RT+HAL](HAL_RT_samples)
 
 ## Useful links
 
@@ -21,5 +27,5 @@ Resources for ChibiOS on STM32 boards
 - [ChibiStudio Templates](https://github.com/KaiL4eK/ChibiStudio_Projects_Templates)
 
 - [GDrive Cloud - Resources](https://drive.google.com/drive/folders/1fpUyJfSUNE7o0h7f75mKOfZIjbINWj1D?usp=sharing)
-- [MEGA Cloud - Videos](https://mega.nz/#F!PVoDxSiS!vc3rVDdMa7lZPIfyjiOfwA)
+- [MEGA Cloud - Videos, Distrib](https://mega.nz/#F!PVoDxSiS!vc3rVDdMa7lZPIfyjiOfwA)
 

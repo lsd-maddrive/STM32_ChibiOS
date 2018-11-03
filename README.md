@@ -3,12 +3,13 @@ Resources for ChibiOS on STM32 boards
 
 ## Developers
 
-[Серых Елена](https://github.com/serykhelena)
+[Серых Елена](https://github.com/serykhelena)  
 [Девяткин Алексей](https://github.com/KaiL4eK)
 
 ## Chapters
 
 - [Как начать работу на Windows?](Startup/Eclipse_STM_settings.md)
+- [Начиная работу с HAL - посмотрите это!](HAL_topics/Basics.md)
 - [Как начать работать с модулем HAL?](HAL_topics)
 - [А что интересного есть в модуле RT?](RT_topics)
 

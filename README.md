@@ -19,13 +19,14 @@ Resources for ChibiOS on STM32 boards
 
 - [Примеры использования модулей RT+HAL](HAL_RT_samples)
 
+- Попрактиковаться с компиляцией через `make`: [ресурсы](CompilationPractise) + [видео](https://mega.nz/#F!bMAlnKiR!4hRVCrJGs6DcB0EpLSYH7w)
+
 ## Useful links
 
-- [Java SE Runtime Environment](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html)
+- [Java SE Runtime Environment](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) или [гугль](http://lmgtfy.com/?q=Java+SE+Runtime+Environment)
 - [Sublime Text 3](https://www.sublimetext.com/3)
 - [ChibiStudio Original](https://sourceforge.net/projects/chibios/files/ChibiStudio/)
-- [ChibiStudio Templates](https://github.com/KaiL4eK/ChibiStudio_Projects_Templates)
+- [ChibiStudio Templates](https://github.com/KaiL4eK/ChibiStudio_Templates)
 
-- [GDrive Cloud - Resources](https://drive.google.com/drive/folders/1fpUyJfSUNE7o0h7f75mKOfZIjbINWj1D?usp=sharing)
-- [MEGA Cloud - Videos, Distrib](https://mega.nz/#F!PVoDxSiS!vc3rVDdMa7lZPIfyjiOfwA)
-
+- [MEGA Cloud](https://mega.nz/#F!PVoDxSiS!vc3rVDdMa7lZPIfyjiOfwA)
+- [GDrive - Presentations](https://drive.google.com/drive/folders/1pf8nIiHnv9FL_8PPEM4XFpd6XeqfnDN-?usp=sharing)

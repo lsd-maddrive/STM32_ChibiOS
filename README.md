@@ -27,6 +27,7 @@ Resources for ChibiOS on STM32 boards
 - [Sublime Text 3](https://www.sublimetext.com/3)
 - [ChibiStudio Original](https://sourceforge.net/projects/chibios/files/ChibiStudio/)
 - [ChibiStudio Templates](https://github.com/KaiL4eK/ChibiStudio_Templates)
+- [ChibiOS OffSite Articles](http://www.chibios.org/dokuwiki/doku.php?id=chibios:articles:start)
 
 - [MEGA Cloud](https://mega.nz/#F!PVoDxSiS!vc3rVDdMa7lZPIfyjiOfwA)
 - [GDrive - Presentations](https://drive.google.com/drive/folders/1pf8nIiHnv9FL_8PPEM4XFpd6XeqfnDN-?usp=sharing)

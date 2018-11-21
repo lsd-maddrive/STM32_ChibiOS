@@ -1,40 +1,42 @@
-# Как завести UART на STM-ке
+# Как завести Serial Driver на STM-ке
 
-## Первый шаг - выбор модуля UART 
+## Первый шаг - выбор модуля Serial Driver 
+
+Serial является обёрткой над UART, что предоставляет удобный функционал по сравнению с необходимостью работать с прерываниями. Поэтому в дальнейшем при работе с STM и ChibiOS под UART будем понимать Serial Driver
 
 Стандартная процедура по выявлению свободных модулей и пинов микроконтроллера (МК). 
 
-> Предположим, что модуль Serial №7 нам всем подходит. В дальнейшем весь код будет связан именно с этим модулем. 
+> Предположим, что модуль Serial Driver №7 нам всем подходит. В дальнейшем весь код будет связан именно с этим модулем. 
 
 ## Второй шаг - определение пинов
 
-1. Открыть Datasheet (DS) на странице с [F767ZI Alternate functions](http://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=89) и найти пины, в фукнциях которых обозначена их принадлежность к одному из модулей UART (в нашем случае к UART7)
+1. Открыть Datasheet (DS) на странице с [F767ZI Alternate functions](http://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=89) и найти пины, в фукнциях которых обозначена их принадлежность к одному из модулей Serial Driver (в нашем случае к UART7)
 
 > Не забывайте, что вам понадобятся 2 пина: RX (*Receive* - для приёма данных) и TX (*Transmit* - для передачи данных)
 
 <p align="center">
-<img src="uart_pics/fig1.PNG">
+<img src="serial_pics/fig1.PNG">
 </p>
  
  2. Открыть страницу с [графической распиновкой платы](https://os.mbed.com/platforms/ST-Nucleo-F767ZI/) и найти пины, принадлежащие к таймеру №Х. **ВАЖНО!! В графической распиновке показаны НЕ ВСЕ функции пинов. БУДЬТЕ ВНИМАТЕЛЬНЫ!!!** 
 
 <p align="center">
-<img src="uart_pics/fig2.PNG">
+<img src="serial_pics/fig2.PNG">
 </p>
 
-> Важно помнить, что когда вы подключаете физический модуль UART-USB к плате с МК, то ножки UART-USB и МК должны быть соединены RX - TX, соответственно. 
+> Важно помнить, что когда вы подключаете физический модуль Serial Driver-USB к плате с МК, то ножки Serial Driver-USB и МК должны быть соединены RX - TX, соответственно. 
 
 <p align="center">
-<img src="uart_pics/fig3.PNG">
+<img src="serial_pics/fig3.PNG">
 </p>
 
-## Третий шаг - Познакомим STM-ку с UART
+## Третий шаг - Познакомим STM-ку с Serial Driver
 
-Нужно дать понять МК, что мы хотим использовать UART (Serial), и что мы хотим использовать модуль UART №Х. Как это сделать - написано в [основах работы с модулями](Basics.md) :grin:.
+Нужно дать понять МК, что мы хотим использовать Serial Driver, и что мы хотим использовать модуль Serial Driver №Х. Как это сделать - написано в [основах работы с модулями](Basics.md) :grin:.
 
-## Четвёртый шаг - Настройка UART
+## Четвёртый шаг - Настройка Serial Driver
 
-Теперь STM морально подготовлена к работе с UART. Пора указать как именно должен работать протокол передачи данных.
+Теперь STM морально подготовлена к работе с Serial Driver. Пора указать как именно должен работать протокол передачи данных.
 
 ```cpp
 static const SerialConfig sdcfg = {
@@ -45,7 +47,7 @@ static const SerialConfig sdcfg = {
 };
 
 ```
-В этой структуре происходит основная настройка UART 
+В этой структуре происходит основная настройка Serial Driver 
 
 * `sdcfg` - название структуры (аналогично с названием стандартных переменных)
 * `speed` - скорость передачи данных [частота передачи ~ [боды](https://en.wikipedia.org/wiki/Baud)]
@@ -81,11 +83,11 @@ int main(void)
 }
 ```
 * `sdStart( &SD7, &sdcfg );` - запуск модуля №7 с именем `sdcfg`  
-* `palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );` - настройка пина PE8 на работу с UART (TX) (номер функции берётся из [Datasheet](http://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=89)). Аналогично с пином PE7 (RX). 
+* `palSetPadMode( GPIOE, 8, PAL_MODE_ALTERNATE(8) );` - настройка пина PE8 на работу с Serial Driver (TX) (номер функции берётся из [Datasheet](http://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=89)). Аналогично с пином PE7 (RX). 
 
-В цикле будет неистово спамится строка `Hohoho` =)
+В цикле будет не очень неистово спамится строка `Hohoho` (с задержкой в 1 с) =)
 
-## Пятый шаг - Использование UART
+## Пятый шаг - Использование Serial Driver
 
 Для начала пройдемся по функциям из [доков](http://chibios.sourceforge.net/docs3/hal/group___s_e_r_i_a_l.html):  
 

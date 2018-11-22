@@ -2,7 +2,7 @@
 
 # Скачать ПО
 
-Качаем из этой [папки на облаке](https://mega.nz/#F!qIR1gaQS!bfPcRXtbFelDegddaNpH6w) архивы:  
+Качаем из этой [папки на облаке](http://maddriveteam.duckdns.org:8000/d/636f89c044664e659fb8/) архивы:  
 + **ChibiStudio_v1.zip** - настроенная IDE на основе Eclipse  
 + **en.stsw-link004.zip** - утилита взаимодействия с STM32 + дровишки  
 + **STM32F767_template_v1.zip** - шаблон проекта для Eclipse  

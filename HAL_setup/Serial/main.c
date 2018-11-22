@@ -34,10 +34,21 @@ static const SerialConfig sdcfg = {
 
 const uint8_t send_type = SERIAL_CHARACTER;
 
-static THD_WORKING_AREA(waSender, 128);
-static THD_FUNCTION(Sender, arg)
+int main(void)
 {
-    arg = arg;      /* just to avoid warnings from compiler */
+    chSysInit();
+    halInit();
+
+    /* as 6th driver is used, use SD6 structure for driver functions */
+    sdStart( &SD6, &sdcfg );
+    /*
+     * https://os.mbed.com/platforms/ST-Nucleo-F767ZI/
+     * serial 6th driver is on PG_14, PG_9
+     * alternate function is 8th (check datasheet)
+     */
+    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );  // TX = PG_14
+    palSetPadMode( GPIOG, 9, PAL_MODE_ALTERNATE(8) );   // RX = PG_9
+
     while (true)
     {
         palToggleLine( LINE_LED1 );
@@ -160,29 +171,5 @@ static THD_FUNCTION(Sender, arg)
         }
 
         chThdSleepMilliseconds( 500 );
-    }
-}
-
-int main(void)
-{
-    chSysInit();
-    halInit();
-
-    /* as 6th driver is used, use SD6 structure for driver functions */
-    sdStart( &SD6, &sdcfg );
-    /*
-     * https://os.mbed.com/platforms/ST-Nucleo-F767ZI/
-     * serial 6th driver is on PG_14, PG_9
-     * alternate function is 8th (check datasheet)
-     */
-    palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );  // TX = PG_14
-    palSetPadMode( GPIOG, 9, PAL_MODE_ALTERNATE(8) );   // RX = PG_9
-
-    /* create thread that sends just string */
-    chThdCreateStatic( waSender, sizeof(waSender), NORMALPRIO, Sender, NULL );
-
-    while (true)
-    {
-        chThdSleepSeconds( 1 );
     }
 }

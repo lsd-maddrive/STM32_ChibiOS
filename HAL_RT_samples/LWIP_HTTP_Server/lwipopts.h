@@ -38,6 +38,7 @@
 #ifndef __LWIPOPT_H__
 #define __LWIPOPT_H__
 
+#if 0
 /*
    -----------------------------------------------
    ---------- Options from lwipthread.h ----------
@@ -156,6 +157,7 @@
 #define LWIP_IFNAME1                        's'
 #endif
 
+#endif
 
 /*
    -----------------------------------------------
@@ -791,7 +793,7 @@
  * LWIP_DHCP==1: Enable DHCP module.
  */
 #ifndef LWIP_DHCP
-#define LWIP_DHCP                       0
+#define LWIP_DHCP                       1
 #endif
 
 /**

@@ -15,5 +15,4 @@ COPY lighttpd.conf .
 COPY docs.tar.gz ./docs
 RUN cd docs; tar xf docs.tar.gz
 
-RUN pwd
-RUN lighttpd -f lighttpd.conf
+CMD lighttpd -Df lighttpd.conf

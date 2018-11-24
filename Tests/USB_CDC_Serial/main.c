@@ -1,173 +1,104 @@
-/*
-    ChibiOS - Copyright (C) 2006..2016 Giovanni Di Sirio
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
-
 #include <stdio.h>
 #include <string.h>
 
+#define min(a, b) ( (a) < (b) ? (a) : (b) )
+
 #include "ch.h"
 #include "hal.h"
-
-#include "shell.h"
 #include "chprintf.h"
 
+#include "test.h"
 #include "usbcfg.h"
 
-/*===========================================================================*/
-/* Command line related.                                                     */
-/*===========================================================================*/
+static uint8_t buf[1024] =
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 
-#define SHELL_WA_SIZE   THD_WORKING_AREA_SIZE(2048)
-
-/* Can be measured using dd if=/dev/xxxx of=/dev/null bs=512 count=10000.*/
-static void cmd_write(BaseSequentialStream *chp, int argc, char *argv[]) {
-  static uint8_t buf[] =
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
-      "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
-
-  palSetLine(LINE_LED2);
-
-  (void)argv;
-  if (argc > 0) {
-    chprintf(chp, "Usage: write\r\n");
-    return;
-  }
-
-  while (chnGetTimeout((BaseChannel *)chp, TIME_IMMEDIATE) == Q_TIMEOUT) {
-#if 0
-    /* Writing in channel mode.*/
-    chnWrite(&SDU1, buf, sizeof buf - 1);
-#else
-    /* Writing in buffer mode.*/
-    (void) obqGetEmptyBufferTimeout(&SDU1.obqueue, TIME_INFINITE);
-    memcpy(SDU1.obqueue.ptr, buf, SERIAL_USB_BUFFERS_SIZE);
-    obqPostFullBuffer(&SDU1.obqueue, SERIAL_USB_BUFFERS_SIZE);
-#endif
-  }
-  chprintf(chp, "\r\n\nstopped\r\n");
-
-  palClearLine(LINE_LED2);
-}
-
-static const ShellCommand commands[] = {
-  {"write", cmd_write},
-  {NULL, NULL}
-};
-
-static const ShellConfig shell_cfg1 = {
-  (BaseSequentialStream *)&SDU1,
-  commands
-};
-
-/*===========================================================================*/
-/* Generic code.                                                             */
-/*===========================================================================*/
-
-/*
- * Red LED blinker thread, times are in milliseconds.
- */
-static THD_WORKING_AREA(waThread1, 128);
-static THD_FUNCTION(Thread1, arg) {
-
-  (void)arg;
-  chRegSetThreadName("blinker");
-  while (true) {
-    systime_t time;
-
-    time = serusbcfg.usbp->state == USB_ACTIVE ? 250 : 1000;
-    palClearLine(LINE_LED1);
-    chThdSleepMilliseconds(time);
-    palSetLine(LINE_LED1);
-    chThdSleepMilliseconds(time);
-  }
-}
+test_params_t   input_params;
+SerialUSBDriver *test_dr    = &SDU1;
 
 /*
  * Application entry point.
  */
 int main(void) {
 
-  /*
-   * System initializations.
-   * - HAL initialization, this also initializes the configured device drivers
-   *   and performs the board-specific initializations.
-   * - Kernel initialization, the main() function becomes a thread and the
-   *   RTOS is active.
-   */
-  halInit();
-  chSysInit();
+    /*
+     * System initializations.
+     * - HAL initialization, this also initializes the configured device drivers
+     *   and performs the board-specific initializations.
+     * - Kernel initialization, the main() function becomes a thread and the
+     *   RTOS is active.
+     */
+    halInit();
+    chSysInit();
 
-  /*
-   * Initializes a serial-over-USB CDC driver.
-   */
-  sduObjectInit(&SDU1);
-  sduStart(&SDU1, &serusbcfg);
+    sduObjectInit(test_dr);
+    sduStart(test_dr, &serusbcfg);
 
-  /*
-   * Activates the USB driver and then the USB bus pull-up on D+.
-   * Note, a delay is inserted in order to not have to disconnect the cable
-   * after a reset.
-   */
-  usbDisconnectBus(serusbcfg.usbp);
-  chThdSleepMilliseconds(1500);
-  usbStart(serusbcfg.usbp, &usbcfg);
-  usbConnectBus(serusbcfg.usbp);
+    /*
+     * Activates the USB driver and then the USB bus pull-up on D+.
+     * Note, a delay is inserted in order to not have to disconnect the cable
+     * after a reset.
+     */
+    usbDisconnectBus(serusbcfg.usbp);
+    chThdSleepMilliseconds(1500);
+    usbStart(serusbcfg.usbp, &usbcfg);
+    usbConnectBus(serusbcfg.usbp);
 
-  /*
-   * Shell manager initialization.
-   */
-  shellInit();
-
-  /*
-   * Creates the blinker thread.
-   */
-  chThdCreateStatic(waThread1, sizeof(waThread1), NORMALPRIO, Thread1, NULL);
-
-  /*
-   * Normal main() thread activity, spawning shells.
-   */
-  while (true) {
-    if (SDU1.config->usbp->state == USB_ACTIVE) {
-      thread_t *shelltp = chThdCreateFromHeap(NULL, SHELL_WA_SIZE,
-                                              "shell", NORMALPRIO + 1,
-                                              shellThread, (void *)&shell_cfg1);
-      chThdWait(shelltp);
-    }
-#if 0
-    if (palReadPad(GPIOI, GPIOI_BUTTON_USER)) {
-      usbDisconnectBus(serusbcfg.usbp);
-      usbStop(serusbcfg.usbp);
-      chThdSleepMilliseconds(1500);
-      usbStart(serusbcfg.usbp, &usbcfg);
-      usbConnectBus(serusbcfg.usbp);
-    }
-#endif
+    /* Required for USB setup */
     chThdSleepMilliseconds(1000);
-  }
+
+    /*
+     * Normal main() thread activity, in this demo it does nothing.
+     */
+    while (true) 
+    {
+        msg_t msg = chnReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( serusbcfg.usbp->state == USB_ACTIVE ? 250 : 1000 ) );
+        if ( msg == sizeof(input_params) )
+        {
+            if ( input_params.chunk_size == 0   || 
+                 input_params.chunk_size > 1024 ||
+                 input_params.chunk_count == 0  ||
+                 input_params.check_id != CONST_INPUT_PARAMS_CHECK_ID )
+            {
+                palSetLine( LINE_LED3 );
+                chSysHalt("Input params invalid");
+            }
+
+            palSetLine( LINE_LED1 );
+
+            uint32_t buffer_mod_chunk = min(input_params.chunk_size, SERIAL_USB_BUFFERS_SIZE);
+
+            for ( uint32_t i = 0; i < input_params.chunk_count; i++ )
+            {
+#if 1
+              /* Writing in channel mode.*/
+              chnWrite( test_dr, buf, input_params.chunk_size );
+#else
+              /* Writing in buffer mode.*/
+              (void) obqGetEmptyBufferTimeout( &test_dr->obqueue, TIME_INFINITE );
+              memcpy( test_dr->obqueue.ptr, buf, buffer_mod_chunk );
+              obqPostFullBuffer( &test_dr->obqueue, buffer_mod_chunk );
+#endif
+            }
+
+            palClearLine( LINE_LED1 );
+        }
+
+        palToggleLine( LINE_LED2 );
+    }
 }

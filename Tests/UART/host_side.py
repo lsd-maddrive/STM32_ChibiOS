@@ -1,15 +1,22 @@
 import serial
 import time
+import argparse
 
 test_speed = 1843200
 
-ser = serial.Serial('/dev/ttyUSB0', test_speed, timeout=10)
+argparser = argparse.ArgumentParser(description='Testing script')
+argparser.add_argument('-s', '--serial', help='Device name', default='/dev/ttyUSB0')
+
+args = argparser.parse_args()
+serial_name = args.serial
+
+ser = serial.Serial(serial_name, test_speed, timeout=10)
 ser.flushInput()
 ser.flushOutput()
 
 
 test_size_bytes = 1024 * 10
-chunk_size		= 32
+chunk_size		= 16
 chunk_count		= int(test_size_bytes / chunk_size)
 
 send_pkg = bytearray([0xff]) + \
@@ -34,9 +41,7 @@ end_time = time.time()
 # Baudrate / 10 / 1024 ~ KB/s
 print('Chunk size %d / count %d' % (chunk_size, chunk_count))
 print('Measured %s KB/s' % (test_size_bytes / (end_time - start_time) / 1024.))
-print('Approximated %s KB/s' % (test_speed / 10. / 1024.))
-
-# ser.write(str.encode('a'))
+print('Approximated UART %s KB/s' % (test_speed / 10. / 1024.))
 
 ser.close()
 

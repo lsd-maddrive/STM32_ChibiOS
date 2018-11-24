@@ -36,110 +36,14 @@ static uint8_t buf[1024] =
     "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
     "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
 
-
 test_params_t   input_params;
+SerialDriver    *test_dr    = &SD2;
 
-bool        send_active = false;
-uint32_t    send_cntr   = 0;
-
-UARTDriver  *test_dr    = &UARTD2;
-
-
-/*
- * This callback is invoked when a transmission buffer has been completely
- * read by the driver.
- */
-static void txend1(UARTDriver *uartp) {
-
-    (void)uartp;
-}
-
-/*
- * This callback is invoked when a transmission has physically completed.
- */
-static void txend2(UARTDriver *uartp) {
-
-    (void)uartp;
-
-    if ( send_active )
-    {
-        if ( ++send_cntr < input_params.chunk_count )
-        {
-            chSysLockFromISR();
-            uartStartSendI(test_dr, input_params.chunk_size, buf);
-            chSysUnlockFromISR();
-        }
-        else
-        {
-            send_active = false;
-
-            palClearLine( LINE_LED1 );
-        }
-    }
-}
-
-/*
- * This callback is invoked when a receive buffer has been completely written.
- */
-static void rxend(UARTDriver *uartp) {
-
-    (void)uartp;
-
-    if ( !send_active )
-    {
-        if ( input_params.chunk_size == 0   || 
-             input_params.chunk_size > 1024 ||
-             input_params.chunk_count == 0  ||
-             input_params.check_id != CONST_INPUT_PARAMS_CHECK_ID )
-        {
-            palSetLine( LINE_LED3 );
-            chSysHalt("Input params invalid");
-        }
-
-        send_active = true;
-        send_cntr   = 0;
-
-        palSetLine( LINE_LED1 );
-
-        chSysLockFromISR();
-        uartStartSendI(test_dr, input_params.chunk_size, buf);
-        chSysUnlockFromISR();
-    }
-}
-
-/*
- * This callback is invoked on a receive error, the errors mask is passed
- * as parameter.
- */
-static void rxerr(UARTDriver *uartp, uartflags_t e) {
-
-    (void)uartp;
-    (void)e;
-}
-
-/*
- * This callback is invoked when a character is received but the application
- * was not ready to receive it, the character is passed as parameter.
- */
-static void rxchar(UARTDriver *uartp, uint16_t c) {
-
-    (void)uartp;
-    (void)c;
-}
-
-/*
- * UART driver configuration structure.
- */
-static UARTConfig uart_cfg_2 = {
-    .txend1_cb  = txend1,
-    .txend2_cb  = txend2,
-    .rxend_cb   = rxend,
-    .rxchar_cb  = rxchar,
-    .rxerr_cb   = rxerr,
-    .speed      = 1843200,
-    .cr1        = 0,
-    .cr2        = 0,
-    .cr3        = 0
+static const SerialConfig sdcfg = {
+  .speed = 1843200,
+  .cr1 = 0,
+  .cr2 = 0,
+  .cr3 = 0
 };
 
 /*
@@ -157,7 +61,7 @@ int main(void) {
     halInit();
     chSysInit();
 
-    uartStart(test_dr, &uart_cfg_2);
+    sdStart( test_dr, &sdcfg );
     palSetPadMode(GPIOD, 5, PAL_MODE_ALTERNATE(7));
     palSetPadMode(GPIOD, 6, PAL_MODE_ALTERNATE(7));
 
@@ -166,11 +70,28 @@ int main(void) {
      */
     while (true) 
     {
+        msg_t msg = sdReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( 500 ) );
+        if ( msg == sizeof(input_params) )
+        {
+            if ( input_params.chunk_size == 0   || 
+                 input_params.chunk_size > 1024 ||
+                 input_params.chunk_count == 0  ||
+                 input_params.check_id != CONST_INPUT_PARAMS_CHECK_ID )
+            {
+                palSetLine( LINE_LED3 );
+                chSysHalt("Input params invalid");
+            }
+
+            palSetLine( LINE_LED1 );
+
+            for ( uint32_t i = 0; i < input_params.chunk_count; i++ )
+            {
+                sdWrite( test_dr, buf, input_params.chunk_size );
+            }
+
+            palClearLine( LINE_LED1 );
+        }
+
         palToggleLine( LINE_LED2 );
-
-        uartStopReceive(test_dr);
-        uartStartReceive(test_dr, sizeof(input_params), &input_params);
-
-        chThdSleepMilliseconds(500);
     }
 }

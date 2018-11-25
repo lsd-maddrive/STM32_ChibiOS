@@ -1,1 +1,1 @@
-# ChibiOS USB_RAW Test
+# ChibiOS UART Test

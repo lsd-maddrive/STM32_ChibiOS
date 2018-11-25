@@ -161,9 +161,6 @@ int main(void) {
     palSetPadMode(GPIOD, 5, PAL_MODE_ALTERNATE(7));
     palSetPadMode(GPIOD, 6, PAL_MODE_ALTERNATE(7));
 
-    /*
-     * Normal main() thread activity, in this demo it does nothing.
-     */
     while (true) 
     {
         palToggleLine( LINE_LED2 );

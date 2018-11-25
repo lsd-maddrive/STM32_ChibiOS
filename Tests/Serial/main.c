@@ -49,9 +49,6 @@ int main(void) {
     palSetPadMode(GPIOD, 5, PAL_MODE_ALTERNATE(7));
     palSetPadMode(GPIOD, 6, PAL_MODE_ALTERNATE(7));
 
-    /*
-     * Normal main() thread activity, in this demo it does nothing.
-     */
     while (true) 
     {
         msg_t msg = sdReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( 500 ) );

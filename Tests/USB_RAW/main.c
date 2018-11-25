@@ -153,10 +153,6 @@ int main(void) {
 
     thread_t *writer_tp = NULL; 
 
-    /*
-     * Normal main() thread activity, in this demo it does nothing except
-     * sleeping in a loop and check the button state.
-     */
     while (true) 
     {
         if ( writer_tp == NULL 

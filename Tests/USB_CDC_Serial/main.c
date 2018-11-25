@@ -59,46 +59,47 @@ int main(void) {
     usbStart(serusbcfg.usbp, &usbcfg);
     usbConnectBus(serusbcfg.usbp);
 
-    /* Required for USB setup */
-    chThdSleepMilliseconds(1000);
-
-    /*
-     * Normal main() thread activity, in this demo it does nothing.
-     */
     while (true) 
     {
-        msg_t msg = chnReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( serusbcfg.usbp->state == USB_ACTIVE ? 250 : 1000 ) );
-        if ( msg == sizeof(input_params) )
+        if ( serusbcfg.usbp->state != USB_ACTIVE )
         {
-            if ( input_params.chunk_size == 0   || 
-                 input_params.chunk_size > 1024 ||
-                 input_params.chunk_count == 0  ||
-                 input_params.check_id != CONST_INPUT_PARAMS_CHECK_ID )
-            {
-                palSetLine( LINE_LED3 );
-                chSysHalt("Input params invalid");
-            }
-
-            palSetLine( LINE_LED1 );
-
-            uint32_t buffer_mod_chunk = min(input_params.chunk_size, SERIAL_USB_BUFFERS_SIZE);
-
-            for ( uint32_t i = 0; i < input_params.chunk_count; i++ )
-            {
-#if 1
-              /* Writing in channel mode.*/
-              chnWrite( test_dr, buf, input_params.chunk_size );
-#else
-              /* Writing in buffer mode.*/
-              (void) obqGetEmptyBufferTimeout( &test_dr->obqueue, TIME_INFINITE );
-              memcpy( test_dr->obqueue.ptr, buf, buffer_mod_chunk );
-              obqPostFullBuffer( &test_dr->obqueue, buffer_mod_chunk );
-#endif
-            }
-
-            palClearLine( LINE_LED1 );
+            chThdSleepMilliseconds( 250 );
         }
+        else
+        {
+            msg_t msg = sdReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( 1000 ) );
+            if ( msg == sizeof(input_params) )
+            {
+                if ( input_params.chunk_size == 0   || 
+                     input_params.chunk_size > 1024 ||
+                     input_params.chunk_count == 0  ||
+                     input_params.check_id != CONST_INPUT_PARAMS_CHECK_ID )
+                {
+                    palSetLine( LINE_LED3 );
+                    chSysHalt("Input params invalid");
+                }
 
+                palSetLine( LINE_LED1 );
+
+                uint32_t buffer_mod_chunk = min(input_params.chunk_size, SERIAL_USB_BUFFERS_SIZE);
+
+                for ( uint32_t i = 0; i < input_params.chunk_count; i++ )
+                {
+#if 1
+                  /* Writing in channel mode.*/
+                  sdWrite( test_dr, buf, input_params.chunk_size );
+#else
+                  /* Writing in buffer mode.*/
+                  (void) obqGetEmptyBufferTimeout( &test_dr->obqueue, TIME_INFINITE );
+                  memcpy( test_dr->obqueue.ptr, buf, buffer_mod_chunk );
+                  obqPostFullBuffer( &test_dr->obqueue, buffer_mod_chunk );
+#endif  
+                }
+
+                palClearLine( LINE_LED1 );
+            }
+        }
+        
         palToggleLine( LINE_LED2 );
     }
 }

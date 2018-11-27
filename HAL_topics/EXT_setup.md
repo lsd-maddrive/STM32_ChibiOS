@@ -15,51 +15,46 @@
 ## Третий шаг - настройка модуля EXT 
 
 ```cpp
-static void extcb1(EXTDriver *extp, expchannel_t channel) {
+static void extcb( EXTDriver *extp, expchannel_t channel )
+{
+    extp = extp;
+    channel = channel;
 
- extp = extp;
- channel = channel;
-
-  palToggleLine(LINE_LED1); 
+    palToggleLine( LINE_LED1 ); 
 }
 
 static const EXTConfig extcfg = {
+  .channels = 
   {
-    {EXT_CH_MODE_DISABLED, NULL}, // 0
-    {EXT_CH_MODE_DISABLED, NULL}, // 1
-    {EXT_CH_MODE_DISABLED, NULL}, // 2
-    {EXT_CH_MODE_DISABLED, NULL}, // 3
-    {EXT_CH_MODE_DISABLED, NULL}, // 4
-    {EXT_CH_MODE_DISABLED, NULL}, // 5
-    {EXT_CH_MODE_DISABLED, NULL}, // 6
-    {EXT_CH_MODE_DISABLED, NULL}, // 7
-    {EXT_CH_MODE_DISABLED, NULL}, // 8
-    {EXT_CH_MODE_DISABLED, NULL}, // 9
-    {EXT_CH_MODE_DISABLED, NULL}, // 10
-    {EXT_CH_MODE_DISABLED, NULL}, // 11
-    {EXT_CH_MODE_DISABLED, NULL}, // 12
-    {EXT_CH_MODE_FALLING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb1}, //PC13 = Button
-    {EXT_CH_MODE_DISABLED, NULL}, // 14
-    {EXT_CH_MODE_DISABLED, NULL}, // 15
-    {EXT_CH_MODE_DISABLED, NULL}, // 16
-    {EXT_CH_MODE_DISABLED, NULL}, 
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL}
+    [0]  = {EXT_CH_MODE_DISABLED, NULL},
+    [1]  = {EXT_CH_MODE_DISABLED, NULL},
+    [2]  = {EXT_CH_MODE_DISABLED, NULL},
+    [3]  = {EXT_CH_MODE_DISABLED, NULL},
+    [4]  = {EXT_CH_MODE_DISABLED, NULL},
+    [5]  = {EXT_CH_MODE_DISABLED, NULL},
+    [6]  = {EXT_CH_MODE_DISABLED, NULL},
+    [7]  = {EXT_CH_MODE_DISABLED, NULL},
+    [8]  = {EXT_CH_MODE_DISABLED, NULL},
+    [9]  = {EXT_CH_MODE_DISABLED, NULL},
+    [10] = {EXT_CH_MODE_DISABLED, NULL},
+    [11] = {EXT_CH_MODE_DISABLED, NULL},
+    [12] = {EXT_CH_MODE_DISABLED, NULL},
+    [13] = {EXT_CH_MODE_FALLING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb}, //PC13 = Button
+    [14] = {EXT_CH_MODE_DISABLED, NULL},
+    [15] = {EXT_CH_MODE_DISABLED, NULL},
   }
 };
+
 ```
 
-В структуре `EXTConfig extcfg` происходит настройка пина на канал модуля внешних прерываний. Поскольку нам нужно, чтобы программа реагирована на нажатие кнопки (PC13), то нужно выбрать 13-й канал EXT и записать туда порт С. Нумерация каналов начинается с 0-ля сверху вниз.  
+В структуре `EXTConfig extcfg` происходит настройка пина на канал модуля внешних прерываний. Поскольку нам нужно, чтобы программа реагирована на нажатие кнопки (PC13), то нужно выбрать 13-й канал EXT и записать туда порт С. Нумерация каналов начинается с 0 сверху вниз.  
 
 * `EXT_CH_MODE_FALLING_EDGE` - выбор режима работы (по срезу сигнала);
-* `EXT_CH_MODE_AUTOSTART` - ????? 
+* `EXT_CH_MODE_AUTOSTART` - канал запускается вместе с запуском драйвера `extStart()`, иначе требуется использовать функцию `extChannelEnable()`
 * `EXT_MODE_GPIOC` - порт, которому принадлежит выбранный пин МК;
-* `extcb1` - имя функции-callback, которая вызывается, когда происходит прерывание. 
+* `extcb` - имя функции-callback, которая вызывается, когда происходит прерывание. 
 
-В функции `extcb1` строки 
+В функции `extcb` строки 
 ```cpp
 extp = extp;
 channel = channel;
@@ -69,7 +64,7 @@ channel = channel;
 В функции `main()` достаточно только запустить модуль EXT. 
 
 ```cpp
-int main(void)
+int main( void )
 {
     chSysInit();
     halInit();
@@ -82,6 +77,6 @@ int main(void)
     }
 }
 ```
-В STM 1 модуль EXT c 16-ю каналами. Поэтому при старте всегда будет модуль №1. 
+В STM единственный модуль EXT c 16-ю каналами. Поэтому при старте всегда будет модуль №1. 
 
-* `extStart( &EXTD1, &extcfg );` - запуск модуля EXT №1 с именем `extcfg`.
+* `extStart( &EXTD1, &extcfg );` - запуск модуля EXT1 с конфигурацией `extcfg`.

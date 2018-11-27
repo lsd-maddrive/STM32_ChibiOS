@@ -30,37 +30,30 @@ static void extcb(EXTDriver *extp, expchannel_t channel)
  * There are EXT_MAX_CHANNELS (in our board it equals 24) channels in config 
  */
 static const EXTConfig extcfg = {
+  .channels = 
   {
     /* Setup for 0 channel (index), trigger on rising edge, autostart (not manual), port D
      * callback for trigger - 'extcb' function
      */
-    {EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD, extcb},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
+    [0]  = {EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOD, extcb},
+    [1]  = {EXT_CH_MODE_DISABLED, NULL},
+    [2]  = {EXT_CH_MODE_DISABLED, NULL},
     /* Setup for 3rd channel (index), trigger on both edge, autostart (not manual), port B
      * callback for trigger - 'extcb' function
      */
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOB, extcb},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL}
+    [3]  = {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOB, extcb},
+    [4]  = {EXT_CH_MODE_DISABLED, NULL},
+    [5]  = {EXT_CH_MODE_DISABLED, NULL},
+    [6]  = {EXT_CH_MODE_DISABLED, NULL},
+    [7]  = {EXT_CH_MODE_DISABLED, NULL},
+    [8]  = {EXT_CH_MODE_DISABLED, NULL},
+    [9]  = {EXT_CH_MODE_DISABLED, NULL},
+    [10] = {EXT_CH_MODE_DISABLED, NULL},
+    [11] = {EXT_CH_MODE_DISABLED, NULL},
+    [12] = {EXT_CH_MODE_DISABLED, NULL},
+    [13] = {EXT_CH_MODE_FALLING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb}, //PC13 = Button
+    [14] = {EXT_CH_MODE_DISABLED, NULL},
+    [15] = {EXT_CH_MODE_DISABLED, NULL},
   }
 };
 #else   /* EXT_STATIC_INIT */

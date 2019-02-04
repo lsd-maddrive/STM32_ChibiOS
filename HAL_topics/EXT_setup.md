@@ -64,7 +64,7 @@ channel = channel;
 В функции `main()` достаточно только запустить модуль EXT. 
 
 ```cpp
-int main( void )
+void main( void )
 {
     chSysInit();
     halInit();

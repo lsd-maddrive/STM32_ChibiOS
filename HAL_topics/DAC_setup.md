@@ -48,7 +48,7 @@ void main( void )
 ```
 
 Чтобы записать значение в канал ЦАП можно использовать следующую функцию:
-
+   
 ```cpp
 dacPutChannelX( &DACD1, channel, dacInput );
 ```

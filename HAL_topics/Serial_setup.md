@@ -1,4 +1,4 @@
-# Как завести Serial Driver на STM-ке
+# Как завести Serial Driver на STM-ке c ChibiOS/HAL
 
 ## Первый шаг - выбор модуля Serial Driver 
 

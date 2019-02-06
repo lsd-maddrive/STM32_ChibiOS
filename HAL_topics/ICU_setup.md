@@ -1,4 +1,4 @@
-# Работа с модулем ICU на STM-ке
+# Работа с модулем ICU на STM-ке c ChibiOS/HAL
 
 ICU = Input Capture Unit = Модуль захвата импульса
 

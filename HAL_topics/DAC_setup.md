@@ -4,7 +4,9 @@
 
 Стандартная процедура по включению модуля ЦАП (DAC) и выявлению незадействованных пинов микроконтроллера (МК). 
 
-Модуль ЦАП на STM32 Nucleo F767ZI состоит из 2-х каналов ([PA4 - DACout1, PA5 - DACout2](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=69))
+Модуль ЦАП на STM32 Nucleo F767ZI состоит из 2-х каналов ([PA4 - DAC_OUT1, PA5 - DAC_OUT2](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=69))
+
+> На данный момент драйвер умеет работать либо с каждым выходом независимо, либо в дуальном `STM32_DAC_DUAL_MODE` режиме. В дуальном режиме работа ведется с драйвером `DACD1`, а сигнал генерируется на оба выхода.
 
 > Предположим, что мы хотим использовать только один канал - PA4.  
 
@@ -18,23 +20,32 @@
 static const DACConfig dac_cfg = {
     /* Initial value of DAC out */
     .init         = 0,
-    /*
-     * Mode of DAC:
-     *      DAC_DHRM_12BIT_RIGHT - 12 bit with right alignment
-     *      DAC_DHRM_12BIT_LEFT  - 12 bit with left alignment
-     *      DAC_DHRM_8BIT_RIGHT  - 8 bit no alignment (half of dacsample_t [uint16_t] type)
-     */
+    /* Mode of DAC */
     .datamode     = DAC_DHRM_12BIT_RIGHT,
     /* Direct register set, future used for triggering DAC */
     .cr           = 0
 };
 ``` 
 
+Немного опишем поля конфигурации:
+* `init` - начальное значение, подаваемое на ЦАП в начале работы (в соответсвии с задаваемой разрядностью)
+* `datamode` - режим работы (разрядность + смещение), возможные значения:
+  - `DAC_DHRM_12BIT_RIGHT` - 12-битный режим, правое смещение
+  - `DAC_DHRM_12BIT_LEFT` - 12-битный режим, левое смещение
+  - `DAC_DHRM_8BIT_RIGHT` - 8-битный режим, правое смещение (как бы нет смещения)
+* То же самое, но для дуального режима
+  - `DAC_DHRM_12BIT_RIGHT_DUAL` - 12-битный режим, правое смещение
+  - `DAC_DHRM_12BIT_LEFT_DUAL` - 12-битный режим, левое смещение
+  - `DAC_DHRM_8BIT_RIGHT_DUAL` - 8-битный режим, правое смещение (как бы нет смещения)
+* `cr` - регистр управления ЦАП (нативный регистр), обычно ставим 0
+
+
 В функции `main()` необходимо прописать конфигурацию пина и запустить модуль
 
 ```cpp
 void main( void )
 {
+    /* Set pin to analogue mode */
     palSetLineMode( PAL_LINE( GPIOA, 4 ), PAL_MODE_INPUT_ANALOG );
 
     /* Start DAC driver with configuration */
@@ -54,16 +65,16 @@ dacPutChannelX( &DACD1, channel, dacInput );
 ```
 
 где
-* `dacInput` - целочисленное значение в диапазоне [0; 4096] при 12-битном режиме работы ЦАП, [0; 255] при 8-битном режиме работы ЦАП
+* `dacInput` - целочисленное значение в диапазоне [0; 4095] при 12-битном режиме работы ЦАП, [0; 255] при 8-битном режиме работы ЦАП
 * `channel` - номер канала ЦАП (нумерация с 0-ля)
 
 Хорошей практикой является создание функций, аргументами которых является величина напряжения, а не условные единицы. 
 Чтобы перевести вольты в значения ЦАП, можно воспользоваться следующей формулой:
 
 ```cpp
-#define VOLTAGE_2_DAC(v)  ((v) / REF_V * DAC_BIT)
+#define VOLTAGE_2_DAC(v)  ((v) / REF_V * DAC_MAX)
 ```
 
 где 
 * `REF_V` - величина опорного напряжения [B];
-* `DAC_BIT` - максимальное значение (зависит от битности), если 12-битный режим - 4096, 8-битный режим - 255
+* `DAC_MAX` - максимальное значение, которое может принять ЦАП на вход (в соответсвии с задаваемой разрядностью)

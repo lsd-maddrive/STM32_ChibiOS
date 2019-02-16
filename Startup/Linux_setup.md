@@ -17,6 +17,17 @@ mkdir -p ~/local_libs
 mkdir -p ~/ext_repos
 ```
 
+# Необходимые пакеты из репозитория
+
+Ставим пакеты, которые нам понадобятся для сборки
+```bash
+sudo apt install cmake libtool pkg-config autoconf automake texinfo
+```
+и работы утилит
+```bash
+sudo apt install libusb-1.0-0-dev
+```
+
 # ST-Link
 
 Набор утилит для прошивки контроллера, стягиваем с [этого репозитория](https://github.com/texane/stlink) в `ext_repos`:
@@ -29,15 +40,12 @@ cd ~/ext_repos; git clone https://github.com/texane/stlink.git
 mkdir -p _build; cd _build
 ```
 
-> Перед сборкой на всякий поставьте библиотеку `libusb` - `sudo apt install libusb-1.0-0-dev`
-
 Вызываем `cmake` с настройкой на инсталяцию в директорию `$HOME/local_libs`:
 ```bash
 cmake -D CMAKE_INSTALL_PREFIX=$HOME/local_libs ..
 ```
 
 > Помним, что `~` = `$HOME`? Когда вы устанавливаете пути куда-то, лучше пользоваться `$HOME`, в случае набора команд - можно и `~`.
-
 
 Собираем и устанавливаем:
 ```bash
@@ -62,9 +70,9 @@ sudo chown -R `whoami`:`whoami` ~/local_libs
 ```bash
 export PATH="$HOME/local_libs/bin:$PATH"
 ```
-> Можете закинуть в конец `~/.bashrc` эту строку, чтобы она устанавливалась при каждом создании терминала
+Добавляем эту строку в конец файла `~/.bashrc`, чтобы переменная устанавливалась при каждом создании сессии (терминала).
 
-и проверяем, что у нас вылазиет ошибка:
+Далее проверяем, что у нас вылазиет ошибка:
 ```bash
 st-flash --version
 
@@ -85,7 +93,7 @@ st-flash: error while loading shared libraries: libstlink.so.1: cannot open shar
 ```bash
 export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/local_libs/lib"
 ```
-> Можете закинуть в конец `~/.bashrc` эту строку, чтобы она устанавливалась при каждом создании терминала
+Добавляем эту строку в конец файла `~/.bashrc`, чтобы переменная устанавливалась при каждом создании сессии (терминала).
 
 В результате:
 ```bash
@@ -169,7 +177,7 @@ git clone -b stable_17.6.x https://github.com/KaiL4eK/ChibiOS.git
 ```bash
 export CHIBIOS_ROOT="$HOME/ext_repos/ChibiOS"
 ```
-> Можете закинуть в конец `~/.bashrc` эту строку, чтобы она устанавливалась при каждом создании терминала
+Добавляем эту строку в конец файла `~/.bashrc`, чтобы переменная устанавливалась при каждом создании сессии (терминала).
 
 На этом установка все =)
 
@@ -210,12 +218,7 @@ git clone https://github.com/ntfreak/openocd.git
 
 > На самом деле официального репозитория на `github` у `openocd` нет, есть только гитовское зеркало - https://repo.or.cz/w/openocd.git, с которого можно стянуть. Мы же пользуемся другим зеркалом, так как у сервака проблемы со скачиванием..)
 
-Перед сборкой надо поставить необходимые пакеты, как просит readme:
-```bash
-sudo apt install libtool pkg-config autoconf automake texinfo
-```
-
-Делаем сборку по readme:
+Переходим в папку и делаем сборку по readme:
 ```bash
 ./bootstrap
 ./configure --prefix=$HOME/local_libs

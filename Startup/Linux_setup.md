@@ -227,7 +227,7 @@ cd ~/ext_repos; git clone https://github.com/ntfreak/openocd.git
 
 > На самом деле официального репозитория на `github` у `openocd` нет, есть только гитовское зеркало - https://repo.or.cz/w/openocd.git, с которого можно стянуть. Мы же пользуемся другим зеркалом, так как у сервака проблемы со скачиванием..)
 
-Переходим в папку `cd openocd` и делаем сборку по readme:
+Переходим в папку `cd openocd` и делаем сборку (взято прямо из README):
 ```bash
 ./bootstrap
 ./configure --prefix=$HOME/local_libs

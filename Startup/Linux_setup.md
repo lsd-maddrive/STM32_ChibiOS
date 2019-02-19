@@ -271,7 +271,7 @@ tar xzvf ChibiStudio17v1_Linux.tar.gz
   - tools - все те утилиты, которые мы ставили, с подготовленным скриптом настройки
   - workspace - рабочее пространство, на него надо указать при запуске, чтобы Eclipse корректно подтянул все плагины
 
-Запустить IDE можно локально:
+Перейдя в папку `ChibiStudio`, запустить IDE можно локально:
 ```bash
 ./ChibiStudio
 ```
@@ -281,6 +281,9 @@ tar xzvf ChibiStudio17v1_Linux.tar.gz
 export PATH="$PATH:$HOME/ChibiStudio"
 ChibiStudio
 ```
+
+Добавляем строку установки переменной `PATH` в конец файла `~/.bashrc`, чтобы переменная устанавливалась при каждом создании сессии (терминала).
+
 
 # For Lazy
 
@@ -298,6 +301,8 @@ tar xzvf ChibiStudio17v1_Linux.tar.gz
 ```bash
 source $HOME/ChibiStudio/tools/setup_vars.sh
 ```
+
+> Обратите внимание, что путь указывает на расположение папки `ChibiStudio` в домашней директории.
 
 Перезапускаем консоль - PROFIT!!!
 

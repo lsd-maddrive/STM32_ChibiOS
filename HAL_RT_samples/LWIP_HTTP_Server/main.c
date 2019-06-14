@@ -140,7 +140,6 @@ int main(void)
     
     while (true)
     {
-        
         chThdSleepSeconds( 1 );
     }
 }

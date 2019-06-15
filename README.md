@@ -7,7 +7,7 @@ Resources for ChibiOS on STM32 boards
 [Девяткин Алексей](https://github.com/KaiL4eK)
 
 ## Chapters
-
+ 
 - [Как начать работу на Windows?](Startup/Windows_setup.md)
 - [Как начать работу на Linux?](Startup/Linux_setup.md)
 - [Начиная работу с HAL - посмотрите это!](HAL_topics/Basics.md)

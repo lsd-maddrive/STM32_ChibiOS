@@ -2,81 +2,44 @@
 
 ## Первый шаг - выбор пина
 
-Стандартная процедура по включению модуля внешних прерываний (EXT) и выявлению незадействованных пинов микроконтроллера (МК). 
+Стандартная процедура по включению модуля внешних прерываний (EXT/PAL_EVENTS) и выявлению незадействованных пинов микроконтроллера (МК). 
 
 > Предположим, что мы хотим генерировать прерывание при нажатии на кнопку, установленную на плате - синяя такая. Она подключена к пину PC13.  
 
 Для работы с внешними прерываниями доступны все пины I/O, любой из них можно указать в одном из 16-ти каналов модуля внешних прерываний. 
 
-## Второй шаг - Познакомим STM-ку с EXT
+## Второй шаг - настройка модуля PAL_EVENTS
 
-Нужно дать понять МК, что мы хотим использовать модуль EXT. Как это сделать - написано в [основах работы с модулями](Basics.md) :grin:.
+Первым делом надо установить переменную `PAL_USE_CALLBACKS` в файле `halconf.h` в значение `TRUE`, чтобы контроллер мог вызывать обработчик событий при появлении на пине.
 
-## Третий шаг - настройка модуля EXT 
+Далее, пишем обработчик прерывания для обработки события на ножке:
 
 ```cpp
-static void extcb( EXTDriver *extp, expchannel_t channel )
+static void extcb( void *arg )
 {
-    extp = extp;
-    channel = channel;
-
-    palToggleLine( LINE_LED1 ); 
-}
-
-static const EXTConfig extcfg = {
-  .channels = 
-  {
-    [0]  = {EXT_CH_MODE_DISABLED, NULL},
-    [1]  = {EXT_CH_MODE_DISABLED, NULL},
-    [2]  = {EXT_CH_MODE_DISABLED, NULL},
-    [3]  = {EXT_CH_MODE_DISABLED, NULL},
-    [4]  = {EXT_CH_MODE_DISABLED, NULL},
-    [5]  = {EXT_CH_MODE_DISABLED, NULL},
-    [6]  = {EXT_CH_MODE_DISABLED, NULL},
-    [7]  = {EXT_CH_MODE_DISABLED, NULL},
-    [8]  = {EXT_CH_MODE_DISABLED, NULL},
-    [9]  = {EXT_CH_MODE_DISABLED, NULL},
-    [10] = {EXT_CH_MODE_DISABLED, NULL},
-    [11] = {EXT_CH_MODE_DISABLED, NULL},
-    [12] = {EXT_CH_MODE_DISABLED, NULL},
-    [13] = {EXT_CH_MODE_FALLING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb}, //PC13 = Button
-    [14] = {EXT_CH_MODE_DISABLED, NULL},
-    [15] = {EXT_CH_MODE_DISABLED, NULL},
-  }
-};
-
-```
-
-В структуре `EXTConfig extcfg` происходит настройка пина на канал модуля внешних прерываний. Поскольку нам нужно, чтобы программа реагирована на нажатие кнопки (PC13), то нужно выбрать 13-й канал EXT и записать туда порт С. Нумерация каналов начинается с 0 сверху вниз.  
-
-* `EXT_CH_MODE_FALLING_EDGE` - выбор режима работы (по срезу сигнала);
-* `EXT_CH_MODE_AUTOSTART` - канал запускается вместе с запуском драйвера `extStart()`, иначе требуется использовать функцию `extChannelEnable()`
-* `EXT_MODE_GPIOC` - порт, которому принадлежит выбранный пин МК;
-* `extcb` - имя функции-callback, которая вызывается, когда происходит прерывание. 
-
-В функции `extcb` строки 
-```cpp
-extp = extp;
-channel = channel;
-``` 
-нужны только для того, чтобы избежать warnings от компилятора. 
-
-В функции `main()` достаточно только запустить модуль EXT. 
-
-```cpp
-void main( void )
-{
-    chSysInit();
-    halInit();
-    
-    extStart( &EXTD1, &extcfg );
-    
-    while (true)
-    {
-      chThdSleepMilliseconds( 10 );
-    }
+  palToggleLine( LINE_LED1 ); 
 }
 ```
-В STM единственный модуль EXT c 16-ю каналами. Поэтому при старте всегда будет модуль №1. 
 
-* `extStart( &EXTD1, &extcfg );` - запуск модуля EXT1 с конфигурацией `extcfg`.
+Обработчик простой - будем мигать светодиодом. Что же дальше? Правильно, подключаем обработчик к ножке и настраиваем тип события в `main()`:
+
+```cpp
+palSetPadCallback( GPIOC, 13, extcb, NULL );
+palEnablePadEvent( GPIOC, 13, PAL_EVENT_MODE_BOTH_EDGES );
+```
+
+Первые два аргумента достаточно понятные, с ними уже работали на уровне драйвера PAL для мигания диодом.
+Функция `palSetPadCallback()`:
+- port - установка порта интересующего пина
+- pad - установка номера интересующего пина
+- callback - функция-обработчик, которая будет вызвана, когда произойдет событие на пине
+- arg - указатель, который бует передан в обработчик прерывания одноименным аргументом
+
+Функция `palEnablePadEvent()`:
+- port - установка порта интересующего пина
+- pad - установка номера интересующего пина
+- event - тип события, может быть:
+  * `PAL_EVENT_MODE_DISABLED` - отключен;
+  * `PAL_EVENT_MODE_RISING_EDGE` - фронт сигнала;
+  * `PAL_EVENT_MODE_FALLING_EDGE` - срез сигнала;
+  * `PAL_EVENT_MODE_BOTH_EDGES` - реакция на срез и на фронт;

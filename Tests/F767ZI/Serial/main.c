@@ -51,7 +51,7 @@ int main(void) {
 
     while (true) 
     {
-        msg_t msg = sdReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( 500 ) );
+        msg_t msg = sdReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), TIME_MS2I( 500 ) );
         if ( msg == sizeof(input_params) )
         {
             if ( input_params.chunk_size == 0   || 

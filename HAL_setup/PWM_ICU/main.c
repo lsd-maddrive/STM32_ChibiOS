@@ -67,8 +67,8 @@ static void icucb (ICUDriver *icup)
 	measured_width = icuGetWidthX(icup);
 }
 
-/* Pointer to ICU driver 2, as we gonna use ICU on base timer 2 */
-ICUDriver	*icuDriver		= &ICUD2;
+/* Pointer to ICU driver 5, as we gonna use ICU on base timer 5 */
+ICUDriver	*icuDriver		= &ICUD5;
 /* Configuration structure */
 ICUConfig	icuConf = {
 	/* Set mode of ICU */

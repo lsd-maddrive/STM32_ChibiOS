@@ -49,30 +49,18 @@ static adcsample_t adc_buffer[ADC1_NUM_CHANNELS * ADC1_BUF_DEPTH];
  * If depth == 1 - callback is called once (when buffer is full-filled)
  * If depth != 1 - callback is called when buffer is half-filled (first part) and 
  *                                                   full-filled (second part)
- * For first half-filled   <adcp>   - driver structure
- *                         <buffer> - pointer to the begin of the buffer (filled part)
- *                         <n>      - count of ready samples (ADC1_NUM_CHANNELS * ADC1_BUF_DEPTH / 2)
- *
- * For second half-filled  <adcp>   - driver structure
- *                         <buffer> - pointer to the half of the buffer (filled part)
- *                         <n>      - count of ready samples (ADC1_NUM_CHANNELS * ADC1_BUF_DEPTH / 2)
+ * <adcp>   - driver structure
  */
 
-static void adccallback(ADCDriver *adcp, adcsample_t *buffer, size_t n)
+static void adccallback(ADCDriver *adcp __attribute__((unused)))
 {
-  adcp = adcp; n = n;
-
-  /* Configuration is set to switch LED state each second */
-  palToggleLine( LINE_LED1 );
-
-  // Full buffer
-  if ( buffer != adc_buffer )
+  if ( adcIsBufferComplete(adcp) )
   {
-    /* Pointer not equal to begin of buffer - second half of buffer is filled */
+    /* second half of buffer is filled */
   } 
-  else
+  else 
   {
-    /* Pointer is equal to begin of the buffer - first half is filled */
+    /* first half is filled */
   }
 }
 

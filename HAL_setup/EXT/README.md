@@ -2,13 +2,8 @@
 
 The code represents configuration and empty callback of triggering the driver.  
 The configuration steps:
-- Setup HAL_USE_EXT in <halconf.h> (Nothing to do in <mcuconf.h>)
-- Create structure of EXTConfig type that is configuration of channels
-  There are EXT_MAX_CHANNELS channels (for us it is 24) to setup
-- Fill the fields of the config (2 ways: static const or during indexing (no const))
-  Index of <channels> array is port number, port name setup is realized with mask like EXT_MODE_GPIO*
-  The code represents config for PD_0 and PB_3 triggering, callback is empty
-- Start the driver with extStart()
+- Set callback with palSetPadCallback() setting port, pad and callback
+- Enable pad event with palEnablePadEvent() setting port, pad and event type
 
 The tasks are:
 1) Change code to trigger the blue button and toggle LED when button is pressed. The task is basic and requires just reconfiguration and small code changes.

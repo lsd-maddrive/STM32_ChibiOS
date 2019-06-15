@@ -2,9 +2,8 @@
 #include <hal.h>
 
 static THD_WORKING_AREA(waBlinkerGreen, 128);
-static THD_FUNCTION(BlinkerGreen, arg)
+static THD_FUNCTION(BlinkerGreen, arg __attribute__((unused)))
 {
-  (void *)arg;                  //Just to avoid Warning
   while ( true )
   {
     palToggleLine( LINE_LED1 );
@@ -13,9 +12,8 @@ static THD_FUNCTION(BlinkerGreen, arg)
 }
 
 static THD_WORKING_AREA(waBlinkerRed, 128);
-static THD_FUNCTION(BlinkerRed, arg)
+static THD_FUNCTION(BlinkerRed, arg __attribute__((unused)))
 {
-  (void *)arg;                  //Just to avoid Warning
   while ( true )
   {
     palToggleLine( LINE_LED3 );
@@ -28,9 +26,8 @@ static THD_FUNCTION(BlinkerRed, arg)
 }
 
 static THD_WORKING_AREA(waBlinkerBlue, 128);
-static THD_FUNCTION(BlinkerBlue, arg)
+static THD_FUNCTION(BlinkerBlue, arg __attribute__((unused)))
 {
-  (void *)arg;                  //Just to avoid Warning
   while ( true )
   {
     palToggleLine( LINE_LED2 );

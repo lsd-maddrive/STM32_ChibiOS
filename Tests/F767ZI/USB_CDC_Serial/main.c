@@ -67,7 +67,7 @@ int main(void) {
         }
         else
         {
-            msg_t msg = sdReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), MS2ST( 1000 ) );
+            msg_t msg = chnReadTimeout( test_dr, (void *)&input_params, sizeof(input_params), TIME_MS2I( 1000 ) );
             if ( msg == sizeof(input_params) )
             {
                 if ( input_params.chunk_size == 0   || 
@@ -87,7 +87,7 @@ int main(void) {
                 {
 #if 1
                   /* Writing in channel mode.*/
-                  sdWrite( test_dr, buf, input_params.chunk_size );
+                  chnWrite( test_dr, buf, input_params.chunk_size );
 #else
                   /* Writing in buffer mode.*/
                   (void) obqGetEmptyBufferTimeout( &test_dr->obqueue, TIME_INFINITE );

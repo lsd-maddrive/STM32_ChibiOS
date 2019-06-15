@@ -21,9 +21,8 @@ static const SerialConfig sdcfg = {
 
 uint32_t overflow_cntr = 0;
 
-void gpt4cb(GPTDriver *gptp)
+void gpt4cb(GPTDriver *gptp __attribute__((unused)))
 {
-  (void *)gptp;
 //  overflow_cntr++;
 }
 
@@ -35,55 +34,6 @@ static const GPTConfig gpt4cfg1 = {
   .callback  =  NULL,
   .cr2       =  0, // TIM_CR2_MMS_1,  /* MMS = 010 = TRGO on Update Event.        */
   .dier      =  0U
-};
-
-/*===========================================================================*/
-/* ADC driver related.                                                       */
-/*===========================================================================*/
-
-#define ADC_GRP1_NUM_CHANNELS   2
-#define ADC_GRP1_BUF_DEPTH      2
-
-static adcsample_t samples1[ADC_GRP1_NUM_CHANNELS * ADC_GRP1_BUF_DEPTH];
-
-/*
- * ADC streaming callback.
- */
-static void adccallback(ADCDriver *adcp, adcsample_t *buffer, size_t n)
-{
-  (void)adcp;
-
-  /* Updating counters.*/
-  if (samples1 == buffer) {
-    // Half processed
-  }
-  else {
-    // Second half processed
-  }
-}
-
-/*
- * ADC errors callback, should never happen.
- */
-static void adcerrorcallback(ADCDriver *adcp, adcerror_t err) {
-
-  (void)adcp;
-  (void)err;
-}
-
-static const ADCConversionGroup adcgrpcfg1 = {
-  .circular     = true,
-  .num_channels = ADC_GRP1_NUM_CHANNELS,
-  .end_cb       = adccallback,
-  .error_cb     = adcerrorcallback,
-  .cr1          = 0,
-  .cr2          = ADC_CR2_EXTEN_RISING | ADC_CR2_EXTSEL_SRC(12),        // Commutated from GPT
-  .smpr1        = ADC_SMPR1_SMP_AN10(ADC_SAMPLE_144),
-  .smpr2        = ADC_SMPR2_SMP_AN3(ADC_SAMPLE_144),
-  .sqr1         = ADC_SQR1_NUM_CH(ADC_GRP1_NUM_CHANNELS),
-  .sqr2         = 0,
-  .sqr3         = ADC_SQR3_SQ1_N(ADC_CHANNEL_IN3) |
-                  ADC_SQR3_SQ2_N(ADC_CHANNEL_IN10)
 };
 
 /*===========================================================================*/
@@ -101,16 +51,12 @@ static mailbox_t test_mb;
 static msg_t buffer_test_mb[MAILBOX_SIZE];
 
 /*===========================================================================*/
-/* EXT driver related.                                                       */
+/* PAL_EVENT (EXT) driver related.                                           */
 /*===========================================================================*/
 
-static void extcb1(EXTDriver *extp, expchannel_t channel) {
-//  static virtual_timer_t vt4;
-
+static void extcb1( void *arg __attribute__((unused)) ) 
+{
   static gptcnt_t front_time, edge_time;
-
-  (void)extp;
-  (void)channel;
 
   if ( palReadPad( GPIOC, 0 ) == PAL_HIGH )
   {
@@ -127,35 +73,6 @@ static void extcb1(EXTDriver *extp, expchannel_t channel) {
   }
 
 }
-
-static const EXTConfig extcfg = {
-  {
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb1},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL}
-  }
-};
-
 
 /*===========================================================================*/
 /* ICU driver related.                                                       */
@@ -208,9 +125,8 @@ static const ICUConfig icucfg_speed = {
  * a LED attached to TP1.
  */
 static THD_WORKING_AREA(waBlinker, 128);
-static THD_FUNCTION(Blinker, arg) {
-
-  (void)arg;
+static THD_FUNCTION(Blinker, arg __attribute__((unused)))
+{
   while (true)
   {
     palToggleLine(LINE_LED1);
@@ -249,37 +165,23 @@ int main(void)
     gptStart(&GPTD4, &gpt4cfg1);
     gptStartContinuous( &GPTD4, UINT16_MAX );    // For external interrupt
 
-    // EXT driver
-    extStart( &EXTD1, &extcfg );
-
-#if 0
-    /*
-     * Fixed an errata on the STM32F7xx, the DAC clock is required for ADC
-     * triggering.
-     */
-    rccEnableDAC1(false);
-
-    // ADC driver
-    adcStart(&ADCD1, NULL);
-    palSetLineMode( LINE_ADC123_IN10, PAL_MODE_INPUT_ANALOG );
-    palSetLineMode( LINE_ADC123_IN3, PAL_MODE_INPUT_ANALOG );
-
-    adcStartConversion(&ADCD1, &adcgrpcfg1, samples1, ADC_GRP1_BUF_DEPTH);
-    gptStartContinuous(&GPTD4, gpt4cfg1.frequency/10);
-#endif
+    // PAL_EVENT (EXT) driver
+    palSetPadCallback( GPIOC, 0, extcb1, NULL );
+    palEnablePadEvent( GPIOC, 0, PAL_EVENT_MODE_BOTH_EDGES );
+    
     chThdCreateStatic(waBlinker, sizeof(waBlinker), NORMALPRIO, Blinker, NULL);
 
     msg_t msg;
 
     while (true)
     {
-      if ( chMBFetch(&steer_mb, &msg, TIME_IMMEDIATE) == MSG_OK )
+      if ( chMBFetchTimeout(&steer_mb, &msg, TIME_IMMEDIATE) == MSG_OK )
         chprintf(((BaseSequentialStream *)&SD7), "Steer      : %d\n", msg);
 
-      if ( chMBFetch(&speed_mb, &msg, TIME_IMMEDIATE) == MSG_OK )
+      if ( chMBFetchTimeout(&speed_mb, &msg, TIME_IMMEDIATE) == MSG_OK )
         chprintf(((BaseSequentialStream *)&SD7), "Speed      : %d\n", msg);
 
-      if ( chMBFetch(&test_mb, &msg, TIME_IMMEDIATE) == MSG_OK )
+      if ( chMBFetchTimeout(&test_mb, &msg, TIME_IMMEDIATE) == MSG_OK )
         chprintf(((BaseSequentialStream *)&SD7), "Steer (GPT): %d\n", msg);
 
       chThdSleepMilliseconds( 1 );

@@ -6,46 +6,15 @@
 thread_reference_t  button_ref = NULL;
 
 /*===========================================================================*/
-/* EXT driver related.                                                       */
+/* PAL_EVENT (EXT) driver related.                                                       */
 /*===========================================================================*/
 
-static void extcb(EXTDriver *extp, expchannel_t channel)
-{
-  extp = extp; channel = channel;
-
+static void extcb(void *arg __attribute__ ((unused)))
+{ 
   chSysLockFromISR();
   chThdResumeI( &button_ref, MSG_OK );
   chSysUnlockFromISR();
 }
-
-static const EXTConfig extcfg =
-{
-  {
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_RISING_EDGE | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb}, //PC13 = Button
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_DISABLED, NULL}
-  }
-};
 
 /*===========================================================================*/
 /* Application code                                                          */
@@ -68,14 +37,14 @@ static THD_FUNCTION(ButtonProc, arg)
 
     if ( palReadLine( LINE_BUTTON ) )
     {
-            chSemSignal( &plansForWorldDestruction );
+      chSemSignal( &plansForWorldDestruction );
     }
   }
 }
 
 void startTask( uint8_t led_num )
 {
-        switch( led_num )
+    switch( led_num )
     {
       case 0:
         palSetLine( LINE_LED1 );
@@ -91,7 +60,7 @@ void startTask( uint8_t led_num )
 
 void stopTask( uint8_t led_num )
 {
-        switch( led_num )
+    switch( led_num )
     {
       case 0:
         palClearLine( LINE_LED1 );
@@ -113,9 +82,9 @@ static THD_FUNCTION(Consumer, arg)
   while ( 1 )
   {
     chSemWait( &plansForWorldDestruction );
-        startTask( arg );
+    startTask( arg );
 
-        switch( (int)arg )
+    switch( (int)arg )
     {
       case 0:
         chThdSleepMilliseconds( 1200 );
@@ -129,7 +98,6 @@ static THD_FUNCTION(Consumer, arg)
     }
 
     stopTask( arg );
-
 
     chThdSleepMilliseconds( 500 );
   }
@@ -152,13 +120,14 @@ int main(void)
   palSetPadMode( GPIOG, 14, PAL_MODE_ALTERNATE(8) );  // TX = PG_14
   palSetPadMode( GPIOG, 9, PAL_MODE_ALTERNATE(8) );   // RX = PG_9
 
-  extStart( &EXTD1, &extcfg );
+  palSetPadCallback( GPIOC, 13, extcb, NULL );
+  palEnablePadEvent( GPIOC, 13, PAL_EVENT_MODE_RISING_EDGE );
+
   chThdCreateStatic( waButtonProc, sizeof(waButtonProc), NORMALPRIO, ButtonProc, NULL );
 
-    chThdCreateStatic( waConsumer1, sizeof(waConsumer1), NORMALPRIO, Consumer, 0 );
+  chThdCreateStatic( waConsumer1, sizeof(waConsumer1), NORMALPRIO, Consumer, 0 );
   chThdCreateStatic( waConsumer2, sizeof(waConsumer2), NORMALPRIO, Consumer, 1 );
   chThdCreateStatic( waConsumer3, sizeof(waConsumer3), NORMALPRIO, Consumer, 2 );
-
 
   while (true)
   {

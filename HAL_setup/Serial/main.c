@@ -119,7 +119,7 @@ int main(void)
             case SERIAL_MATLAB:
             {
                 /* Read one byte data with timeout 10 ms */
-                msg_t msg = sdGetTimeout( &SD6, MS2ST( 10 ) );
+                msg_t msg = sdGetTimeout( &SD6, TIME_MS2I( 10 ) );
 
                 /*
                  * This condition work for any king of uint8_t message

@@ -1,1 +1,0 @@
-# ChibiOS USB_CDC Test

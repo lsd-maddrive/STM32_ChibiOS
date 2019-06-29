@@ -3,7 +3,7 @@
 # Скачать ПО
 
 Качаем из этой [папки на облаке](https://drive.google.com/open?id=1d_n7p8SNheWWZ7LWnjXoyWJ8H5a-aWcX) архивы:  
-+ **ChibiStudio17v2_windows.zip** - настроенная IDE на основе Eclipse  
++ **ChibiStudio17_windows.zip** - настроенная IDE на основе Eclipse  
 + **en.stsw-link004.zip** - утилита взаимодействия с STM32 + дровишки 
 
 Сохранить файлы лучше подближе к корневому диску. Например, `D:\RTOS`
@@ -19,7 +19,7 @@
 
 После скачивания будьте добрый установить Java =)
 
-3. Распакуйте архив **ChibiStudio17v2_windows.zip** - это "урезанная" версия ChibiStudio, в ней меньше папочек, а именно: 
+3. Распакуйте архив **ChibiStudio17_windows.zip** - это "урезанная" версия ChibiStudio, в ней меньше папочек, а именно: 
 
 <p align="center">
 <img src="eclipse_stm_pics/fig_1.PNG">

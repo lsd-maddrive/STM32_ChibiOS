@@ -172,7 +172,7 @@ gcc version 8.2.1 20181213 (release) [gcc-8-branch revision 267074] (GNU Tools f
 Для начала стянем исходники, в папку `ext_repos`:
 ```bash
 cd ~/ext_repos
-git clone -b stable_17.6.x https://github.com/KaiL4eK/ChibiOS.git
+git clone -b stable_19.1.x https://github.com/ChibiOS/ChibiOS.git
 ```
 
 Далее остается только установить переменную указывающую на корень ChibiOS:
@@ -296,7 +296,7 @@ sudo apt install libusb-1.0-0-dev default-jdk default-jre
 
 Тянем архив с [облака](https://drive.google.com/open?id=1d_n7p8SNheWWZ7LWnjXoyWJ8H5a-aWcX), распаковываем:
 ```bash
-tar xzvf ChibiStudio17v1_Linux.tar.gz
+tar xzvf ChibiStudio19_Linux.tar.gz
 ```
 
 Пишем в конец `~/.bashrc`:

@@ -5,7 +5,7 @@
 
 # Compiler options here.
 ifeq ($(USE_OPT),)
-  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16
+  USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 $(PROJECT_OPT)
 endif
 
 # C specific options here (added to USE_OPT).
@@ -18,7 +18,7 @@ ifeq ($(USE_CPPOPT),)
   USE_CPPOPT = -fno-rtti
 endif
 
-# Enable this if you want the linker to remove unused code and data
+# Enable this if you want the linker to remove unused code and data.
 ifeq ($(USE_LINK_GC),)
   USE_LINK_GC = yes
 endif
@@ -28,7 +28,7 @@ ifeq ($(USE_LDOPT),)
   USE_LDOPT = 
 endif
 
-# Enable this if you want link time optimizations (LTO)
+# Enable this if you want link time optimizations (LTO).
 ifeq ($(USE_LTO),)
   USE_LTO = yes
 endif
@@ -74,19 +74,28 @@ ifeq ($(USE_FPU),)
   USE_FPU = no
 endif
 
+# FPU-related options.
+ifeq ($(USE_FPU_OPT),)
+  USE_FPU_OPT = -mfloat-abi=$(USE_FPU) -mfpu=fpv4-sp-d16
+endif
+
 #
 # Architecture or project specific options
 ##############################################################################
 
 ##############################################################################
-# Project, sources and paths
+# Project, target, sources and paths
 #
 
 # Define project name here
 PROJECT = ch
 
-# Imported source files and paths
+# Target settings.
+MCU  = cortex-m3
+
+# Imported source files and paths.
 CHIBIOS = $(CHIBIOS_ROOT)
+
 # Startup files.
 include $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk/startup_stm32f1xx.mk
 # HAL-OSAL files (optional).
@@ -94,12 +103,12 @@ include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F1xx/platform.mk
 include $(CHIBIOS)/os/hal/boards/MAPLEMINI_STM32_F103/board.mk
 include $(CHIBIOS)/os/hal/osal/rt/osal.mk
+include $(CHIBIOS)/os/hal/lib/streams/streams.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 # Other files (optional).
-#include $(CHIBIOS)/test/rt/test.mk
-include $(CHIBIOS)/os/hal/lib/streams/streams.mk
+
 
 # Define linker script file here
 LDSCRIPT = $(STARTUPLD)/STM32F103x8.ld
@@ -160,8 +169,6 @@ INCDIR = $(CHIBIOS)/os/license \
 # Compiler settings
 #
 
-MCU  = cortex-m3
-
 #TRGT = arm-elf-
 TRGT = arm-none-eabi-
 CC   = $(TRGT)gcc
@@ -215,7 +222,7 @@ ULIBDIR =
 ULIBS = $(PROJECT_LIBS)
 
 #
-# End of user defines
+# End of user section
 ##############################################################################
 
 RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC

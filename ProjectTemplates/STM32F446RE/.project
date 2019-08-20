@@ -27,7 +27,7 @@
 		<link>
 			<name>board</name>
 			<type>2</type>
-			<locationURI>CHIBIOS/os/hal/boards/ST_NUCLEO144_F446ZE</locationURI>
+			<location>CHIBIOS/os/hal/boards/ST_NUCLEO64_F446RE</location>
 		</link>
 		<link>
 			<name>os</name>

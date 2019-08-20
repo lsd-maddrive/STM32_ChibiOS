@@ -1,12 +1,10 @@
 #include <ch.h>
 #include <hal.h>
 
-#include <chprintf.h>
-
 static THD_WORKING_AREA(waThread, 128);
 static THD_FUNCTION(Thread, arg) 
 {
-    arg = arg;
+    (void)arg;
 
     while (true)
     {
@@ -14,12 +12,20 @@ static THD_FUNCTION(Thread, arg)
     }
 }
 
+/*
+ * Application entry point.
+ */
 int main(void)
 {
-    /* RT Core initialization */
-    chSysInit();
-    /* HAL (Hardware Abstraction Layer) initialization */
+    /*
+     * System initializations.
+     * - HAL initialization, this also initializes the configured device drivers
+     *   and performs the board-specific initializations.
+     * - Kernel initialization, the main() function becomes a thread and the
+     *   RTOS is active.
+     */
     halInit();
+    chSysInit();
 
     chThdCreateStatic(waThread, sizeof(waThread), NORMALPRIO, Thread, NULL /* arg is NULL */);
 

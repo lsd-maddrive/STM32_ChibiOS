@@ -103,6 +103,7 @@ include $(CHIBIOS)/os/hal/hal.mk
 include $(CHIBIOS)/os/hal/ports/STM32/STM32F1xx/platform.mk
 include $(CHIBIOS)/os/hal/boards/MAPLEMINI_STM32_F103/board.mk
 include $(CHIBIOS)/os/hal/osal/rt/osal.mk
+include $(CHIBIOS)/os/hal/lib/streams/streams.mk
 # RTOS files (optional).
 include $(CHIBIOS)/os/rt/rt.mk
 include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
@@ -167,22 +168,6 @@ ULIBS = $(PROJECT_LIBS)
 # End of user section
 ##############################################################################
 
-##############################################################################
-# Common rules
-#
-
 RULESPATH = $(CHIBIOS)/os/common/startup/ARMCMx/compilers/GCC/mk
 include $(RULESPATH)/arm-none-eabi.mk
 include $(RULESPATH)/rules.mk
-
-#
-# Common rules
-##############################################################################
-
-##############################################################################
-# Custom rules
-#
-
-#
-# Custom rules
-##############################################################################

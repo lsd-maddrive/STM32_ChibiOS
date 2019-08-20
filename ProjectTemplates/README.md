@@ -1,7 +1,5 @@
 # ChibiStudio (Eclipse) project templates
 
-ChibiOS version 17 is used (branch - stable_17.6.x)
-
 ## Links
 
 - [STM32F767ZI](STM32F767ZI)

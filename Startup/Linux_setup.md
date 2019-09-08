@@ -301,6 +301,7 @@ tar xzvf ChibiStudio17_Linux.tar.gz
 
 Пишем в конец `~/.bashrc`:
 ```bash
+# Вместо $HOME, что является вашей домашней директории, может быть путь до папки ChibiStudio
 source $HOME/ChibiStudio/tools/setup_vars.sh
 ```
 

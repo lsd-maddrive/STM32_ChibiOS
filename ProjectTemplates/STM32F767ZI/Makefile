@@ -3,6 +3,8 @@
 # NOTE: Can be overridden externally.
 #
 
+include project.mk
+
 # Compiler options here.
 ifeq ($(USE_OPT),)
   USE_OPT = -O2 -ggdb -fomit-frame-pointer -falign-functions=16 $(PROJECT_OPT)
@@ -112,8 +114,6 @@ include $(CHIBIOS)/os/common/ports/ARMCMx/compilers/GCC/mk/port_v7m.mk
 
 # Define linker script file here
 LDSCRIPT= $(STARTUPLD)/STM32F76xxI.ld
-
-include project.mk
 
 # C sources that can be compiled in ARM or THUMB mode depending on the global
 # setting.

@@ -10,6 +10,8 @@ Resources for ChibiOS on STM32 boards
  
 - [Как начать работу на Windows?](Startup/Windows_setup.md)
 - [Как начать работу на Linux?](Startup/Linux_setup.md)
+- [Что делать с новым проектом?](ProjectTemplates/New_project.md)
+
 - [Начиная работу с HAL - посмотрите это!](HAL_topics/Basics.md)
 - [Как начать работать с модулями HAL?](HAL_topics)
 - [Примеры настройки модулей HAL](HAL_setup)
@@ -26,8 +28,8 @@ Resources for ChibiOS on STM32 boards
 
 - [Java SE Runtime Environment](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) или [гугль](http://lmgtfy.com/?q=Java+SE+Runtime+Environment)
 - [Sublime Text 3](https://www.sublimetext.com/3)
-- [ChibiStudio Original](https://sourceforge.net/projects/chibios/files/ChibiStudio/)
-- [ChibiStudio Templates](https://github.com/KaiL4eK/ChibiStudio_Templates)
+- [ChibiStudio Original](http://www.chibios.org/dokuwiki/doku.php?id=chibios:product:chibistudio:start)
+- [ChibiOS GitHub](https://github.com/ChibiOS/ChibiOS)
 
 - [ChibiOS OffSite Articles](http://www.chibios.org/dokuwiki/doku.php?id=chibios:articles:start)
 - [ChibiOS OffSite Book](http://www.chibios.org/dokuwiki/doku.php?id=chibios:book:start)

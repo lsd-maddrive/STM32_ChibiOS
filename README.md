@@ -1,11 +1,6 @@
 # STM32_ChibiOS
 Resources for ChibiOS on STM32 boards
 
-## Developers
-
-[Серых Елена](https://github.com/serykhelena)  
-[Девяткин Алексей](https://github.com/KaiL4eK)
-
 ## Chapters
  
 - [Как начать работу на Windows?](Startup/Windows_setup.md)

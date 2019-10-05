@@ -29,7 +29,7 @@ Resources for ChibiOS on STM32 boards
 - [Java SE Runtime Environment](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) или [гугль](http://lmgtfy.com/?q=Java+SE+Runtime+Environment)
 - [Sublime Text 3](https://www.sublimetext.com/3)
 - [ChibiStudio Original](http://www.chibios.org/dokuwiki/doku.php?id=chibios:product:chibistudio:start)
-- [ChibiOS GitHub](https://github.com/ChibiOS/ChibiOS)
+- [ChibiOS GitHub](https://github.com/ChibiOS/ChibiOS/tree/stable_17.6.x)
 
 - [ChibiOS OffSite Articles](http://www.chibios.org/dokuwiki/doku.php?id=chibios:articles:start)
 - [ChibiOS OffSite Book](http://www.chibios.org/dokuwiki/doku.php?id=chibios:book:start)

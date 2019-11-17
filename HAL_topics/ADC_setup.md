@@ -8,7 +8,7 @@
 
 Определяем какие именно пины МК относятся к АПЦ и к каким именно каналам, это можно сделать несколькими способами.
 
-1. Открыть [Datasheet (DS)](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=65) и в таблице 11 в столбце *Additional functions* найти обозначение канала нужно нам модуля АЦП
+1. Открыть Datasheet (DS) на ваш контроллер, [например для STM32F767ZI](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=65) и в таблице *Pin and ball definitions* в столбце *Additional functions* найти обозначение канала нужно нам модуля АЦП
 
 <p align="center">
 <img src="adc_pics/fig1.PNG">
@@ -22,7 +22,7 @@
 
 > **!!!Обратите внимание**, что один и тот же пин может соответствовать одному и тому же каналу разных модулей АЦП. Если этот пин вы уже использовали для АЦП №1, то для АЦП №2 или №3 не стоит его использовать - может образоваться неистовое страдание при поиске ошибок (=
 
-2. Открыть [графическую распиновку платы](https://os.mbed.com/platforms/ST-Nucleo-F767ZI/) и найти пины с обозначением *AnalogIn*, но определить к какому каналу АЦП и к какому модулю АЦП они принадлежат только по картинке не получится, поэтому всё равно придётся обращаться к [DS](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=65), но искать по названию пина может быть проще и быстрее. 
+2. Открыть графическую распиновку платы, [например для STM32F767ZI](https://os.mbed.com/platforms/ST-Nucleo-F767ZI/) и найти пины с обозначением *ADCn/ch*, где *n* - номер драйвера, а *ch* - канал. 
 
 <p align="center">
 <img src="adc_pics/fig2.PNG">
@@ -143,7 +143,7 @@ static const ADCConversionGroup adcgrpcfg1 = {
   - `ADC_CR2_EXTEN_RISING` - реакция на фронт сигнала от источника триггера
   - `ADC_CR2_EXTEN_FALLING` - реакция на срез сигнала от источника триггера
   - `ADC_CR2_EXTEN_BOTH` - реакция на оба события (фронт, срез) от источника триггера
-  - `ADC_CR2_EXTSEL_SRC()` - задание источника для реакции АЦП. Возмодные значения можно посмотреть в [Reference Manual (RM)](https://www.st.com/content/ccc/resource/technical/document/reference_manual/group0/96/8b/0d/ec/16/22/43/71/DM00224583/files/DM00224583.pdf/jcr:content/translations/en.DM00224583.pdf#page=451)
+  - `ADC_CR2_EXTSEL_SRC()` - задание источника для реакции АЦП. Возможные значения можно посмотреть в Reference Manual (RM) на ваш контроллер в таблице *External trigger for regular channels*
 * `smpr1` - настройка длительности снятия сигнала (семплирование) с канала, возможные значения:
   - `ADC_SMPR1_SMP_AN[10-15,SENSOR,VREF,VBAT]()` - задание семплирования для каналов 10-15, температурного датчика (только ADC1), опорного напряжения (только ADC1), напряжения батарейки (только ADC1). Возможные значения для макросов:
     - `ADC_SAMPLE_3`

@@ -144,12 +144,12 @@ v1.5.1-15-g3295ab4
 На этом этапе мы не будем собирать компилятор с нуля. Просто скачаем [отсюда](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads). Переходим к архиву в папку (например, если он в папке `~/Downloads`) и распаковываем:
 ```bash
 cd ~/Downloads
-tar xvf gcc-arm-none-eabi-8-2018-q4-major-linux.tar.bz2
+tar xvf gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2  
 ```
 
 В результате получаем папку `gcc-arm-none-eabi-8-2018-q4-major`. Если посмотреть внутрь, то структура очень напоминает структуру, которую создал `st-link` при установке - `bin`, `lib`, `share`... Теперь нужно начинку разместить в папку `~/local_libs`:
 ```bash
-cp -r gcc-arm-none-eabi-8-2018-q4-major/* ~/local_libs
+cp -r gcc-arm-none-eabi-9-2020-q2-update/* ~/local_libs
 ```
 
 Проверяем:
@@ -158,11 +158,11 @@ arm-none-eabi-gcc -v
 
 Using built-in specs.
 COLLECT_GCC=arm-none-eabi-gcc
-COLLECT_LTO_WRAPPER=/home/alexey/local_libs/bin/../lib/gcc/arm-none-eabi/8.2.1/lto-wrapper
+COLLECT_LTO_WRAPPER=/home/lena/local_libs/bin/../lib/gcc/arm-none-eabi/9.3.1/lto-wrapper
 Target: arm-none-eabi
-Configured with: /tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/src/gcc/configure --target=arm-none-eabi --prefix=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native --libexecdir=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native/lib --infodir=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native/share/doc/gcc-arm-none-eabi/info --mandir=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native/share/doc/gcc-arm-none-eabi/man --htmldir=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native/share/doc/gcc-arm-none-eabi/html --pdfdir=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --enable-plugins --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-newlib --with-headers=yes --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/install-native/arm-none-eabi --build=x86_64-linux-gnu --host=x86_64-linux-gnu --with-gmp=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/build-native/host-libs/usr --with-mpfr=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/build-native/host-libs/usr --with-mpc=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/build-native/host-libs/usr --with-isl=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/build-native/host-libs/usr --with-libelf=/tmp/jenkins/jenkins-GCC-8-build_toolchain_docker-519_20181216_1544945247/build-native/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Tools for Arm Embedded Processors 8-2018-q4-major' --with-multilib-list=rmprofile
+Configured with: /mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/src/gcc/configure --target=arm-none-eabi --prefix=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native --libexecdir=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native/lib --infodir=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native/share/doc/gcc-arm-none-eabi/info --mandir=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native/share/doc/gcc-arm-none-eabi/man --htmldir=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native/share/doc/gcc-arm-none-eabi/html --pdfdir=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native/share/doc/gcc-arm-none-eabi/pdf --enable-languages=c,c++ --enable-plugins --disable-decimal-float --disable-libffi --disable-libgomp --disable-libmudflap --disable-libquadmath --disable-libssp --disable-libstdcxx-pch --disable-nls --disable-shared --disable-threads --disable-tls --with-gnu-as --with-gnu-ld --with-newlib --with-headers=yes --with-python-dir=share/gcc-arm-none-eabi --with-sysroot=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/install-native/arm-none-eabi --build=x86_64-linux-gnu --host=x86_64-linux-gnu --with-gmp=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/build-native/host-libs/usr --with-mpfr=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/build-native/host-libs/usr --with-mpc=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/build-native/host-libs/usr --with-isl=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/build-native/host-libs/usr --with-libelf=/mnt/workspace/workspace/GCC-9-pipeline/jenkins-GCC-9-pipeline-200_20200521_1590053374/build-native/host-libs/usr --with-host-libstdcxx='-static-libgcc -Wl,-Bstatic,-lstdc++,-Bdynamic -lm' --with-pkgversion='GNU Arm Embedded Toolchain 9-2020-q2-update' --with-multilib-list=rmprofile,aprofile
 Thread model: single
-gcc version 8.2.1 20181213 (release) [gcc-8-branch revision 267074] (GNU Tools for Arm Embedded Processors 8-2018-q4-major)
+gcc version 9.3.1 20200408 (release) (GNU Arm Embedded Toolchain 9-2020-q2-update) 
 ```
 
 Если после копирования компилятор не виден (не находит утилиту) - либо не туда скопировали (проверьте `~/local_libs/bin`), либо не установили переменную `PATH`.
@@ -172,7 +172,8 @@ gcc version 8.2.1 20181213 (release) [gcc-8-branch revision 267074] (GNU Tools f
 Для начала стянем исходники, в папку `ext_repos`:
 ```bash
 cd ~/ext_repos
-git clone -b stable_17.6.x https://github.com/KaiL4eK/ChibiOS.git
+
+git clone -b stable_17.6.x https://github.com/ChibiOS/ChibiOS.git
 ```
 
 Далее остается только установить переменную указывающую на корень ChibiOS:

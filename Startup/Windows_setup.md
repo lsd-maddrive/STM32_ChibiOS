@@ -2,7 +2,7 @@
 
 # Скачать ПО
 
-Качаем из этой [папки на облаке](https://drive.google.com/open?id=1d_n7p8SNheWWZ7LWnjXoyWJ8H5a-aWcX) архивы:  
+Качаем из этой [папки на облаке](https://disk.yandex.ru/d/awki7AnoKNxiuA) архивы:  
 + **ChibiStudio17_windows.zip** - настроенная IDE на основе Eclipse  
 + **en.stsw-link004.zip** - утилита взаимодействия с STM32 + дровишки 
 

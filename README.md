@@ -17,7 +17,7 @@ Resources for ChibiOS on STM32 boards
 
 - [Примеры использования модулей RT+HAL](HAL_RT_samples)
 
-- Попрактиковаться с компиляцией через `make`: [ресурсы](CompilationPractise) + [видео](https://mega.nz/#F!bMAlnKiR!4hRVCrJGs6DcB0EpLSYH7w)
+- Попрактиковаться с компиляцией через `make`: [ресурсы](CompilationPractise) + [видео](https://disk.yandex.ru/d/zXlk9GWmxtb1BQ)
 
 ## Useful links
 

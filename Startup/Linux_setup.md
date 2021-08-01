@@ -295,7 +295,7 @@ ChibiStudio
 sudo apt install libusb-1.0-0-dev default-jdk default-jre
 ```
 
-Тянем архив с [облака](https://drive.google.com/open?id=1d_n7p8SNheWWZ7LWnjXoyWJ8H5a-aWcX), распаковываем:
+Тянем архив с [облака](https://disk.yandex.ru/d/awki7AnoKNxiuA), распаковываем:
 ```bash
 tar xzvf ChibiStudio17_Linux.tar.gz
 ```

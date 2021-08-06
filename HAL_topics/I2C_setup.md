@@ -7,7 +7,7 @@ I2C - драйвер, управляющий, как это ни странно,
 
 Чтобы включить дравйвер, как и для любого модуля, необходимо в halconf.h установить HAL_USE_I2C в состояние TRUE. А так же в mcuconfig.h включить хотя бы один из модулей, 
 установив один или несколько STM32_I2C_USE_I2Cx в состояние TRUE, где x - номер устройства. Все модули работают абсолютно одинаково, поэтому руководствуйтесь исключительно выбором свободой ножки МК. Посмотреть какой модуль
-на какой ноге можно по [картинке](https://os.mbed.com/platforms/ST-Nucleo-F767ZI/) или по [таблице альтернативных функций](file:///C:/Users/3143~1/AppData/Local/Temp/stm32f765bi.pdf#page=89).
+на какой ноге можно по [картинке](https://os.mbed.com/platforms/ST-Nucleo-F767ZI/) или по [таблице альтернативных функций](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=89).
 
 
 Аналогично все модулям в ChibiOS, запуск i2c осуществляется с помощью функции i2cStart(\*i2c_driver, \*i2c_config). 
@@ -132,14 +132,14 @@ void i2cStart(I2CDriver *i2cp, const I2CConfig *config);
 void i2cStop(I2CDriver *i2cp);
 i2cflags_t i2cGetErrors(I2CDriver *i2cp);
 msg_t i2cMasterTransmitTimeout(I2CDriver *i2cp,
-								i2caddr_t addr,
-								const uint8_t *txbuf, size_t txbytes,
-								uint8_t *rxbuf, size_t rxbytes,
-								sysinterval_t timeout);
+                                i2caddr_t addr,
+                                const uint8_t *txbuf, size_t txbytes,
+                                uint8_t *rxbuf, size_t rxbytes,
+                                sysinterval_t timeout);
 msg_t i2cMasterReceiveTimeout(I2CDriver *i2cp,
-								i2caddr_t addr,
-								uint8_t *rxbuf, size_t rxbytes,
-								sysinterval_t timeout);
+                                i2caddr_t addr,
+                                uint8_t *rxbuf, size_t rxbytes,
+                                sysinterval_t timeout);
 void i2cAcquireBus(I2CDriver *i2cp);
 void i2cReleaseBus(I2CDriver *i2cp);
 ```

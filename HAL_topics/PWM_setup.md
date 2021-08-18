@@ -33,13 +33,13 @@ TIM16 not present in the selected device
 Каждый канал таймера это какая-то нога, причем как обычно есть несколько вариантов. Смотрим [таблицу](https://www.st.com/content/ccc/resource/technical/document/datasheet/group3/c5/37/9c/1d/a6/09/4e/1a/DM00273119/files/DM00273119.pdf/jcr:content/translations/en.DM00273119.pdf#page=89) и ищём что-нибудь вроде `TIM1_CH2`, что означает второй канал первого таймера. 
 
 <p align="center">
-<img src="pwm_pics/fig1.png" width=600/>
+<img src="pwm_pics/fig1.PNG" width=600/>
 </p>
 
 У первого и восьмого таймеров каждый канал обозначен двумая ногами, например, `TIM8_CH1` и `TIM8_CH1N`.
 
 <p align="center">
-<img src="pwm_pics/fig2.png" width=600/>
+<img src="pwm_pics/fig2.PNG" width=600/>
 </p>
 
 Это особенность **Advanced** таймеров, которая означает, что две ноги могут работать в [комплементарном режиме](http://we.easyelectronics.ru/_YS_/complementary-pwm-i-push-pull-rezhimy-na-taymere-1-kontrollerov-stm32.html#:~:text=%D0%92%20%D0%BA%D0%BE%D0%BC%D0%BF%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%D0%B0%D1%80%D0%BD%D0%BE%D0%BC%20%D1%80%D0%B5%D0%B6%D0%B8%D0%BC%D0%B5%20%D0%B2%D1%82%D0%BE%D1%80%D0%BE%D0%B9%20%D1%81%D0%B8%D0%B3%D0%BD%D0%B0%D0%BB,%D0%B8%20%D0%B8%D0%B7%D0%BC%D0%B5%D0%BD%D1%8F%D1%8E%D1%82%20%D0%BA%D0%BE%D1%8D%D1%84%D1%84%D0%B8%D1%86%D0%B8%D0%B5%D0%BD%D1%82%20%D0%B7%D0%B0%D0%BF%D0%BE%D0%BB%D0%BD%D0%B5%D0%BD%D0%B8%D1%8F%20%D1%81%D0%B8%D0%BD%D1%85%D1%80%D0%BE%D0%BD%D0%BD%D0%BE.). Причем первый и восьмой таймеры могут работать и в обычном режиме, смотря что установлено в конфигурации.
@@ -95,7 +95,7 @@ typedef struct {
 На картинке видно, что таймеры 2, 3, 4, 5, 6, 7, 12, 13, 14 относятся к `APB1`. А таймеры 1, 8, 9, 10, 11 `APB2`.
 
 <p align="center">
-<img src="pwm_pics/fig3.png" width=700/>
+<img src="pwm_pics/fig3.PNG" width=700/>
 </p>
 
 Частота шины вычисляется, как **частота процессора, деленная на предделитель**.
@@ -146,7 +146,7 @@ typedef struct {
 Таким образом, время периода складывается из длительности состояний `active` и `idle`. При этом `active` может быть как высоким, так и низким уровнем напряжения.
 
 <p align="center">
-<img src="pwm_pics/fig4.png" width="600">
+<img src="pwm_pics/fig4.PNG" width="600">
 </p>
 
 Таким образом, в поле `mode` можно установить три разных значения:

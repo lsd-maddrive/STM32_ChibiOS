@@ -2,8 +2,8 @@
 
 # Скачать ПО
 
-Качаем из этой [папки на облаке](https://disk.yandex.ru/d/awki7AnoKNxiuA) архивы:  
-+ **ChibiStudio20v0_windows.zip** - настроенная IDE на основе Eclipse  
+Качаем из этой [папки на облаке](https://disk.yandex.ru/d/awki7AnoKNxiuA/Releases) архивы:  
++ **ChibiStudio20v0_windows.zip** (в папке rc) - настроенная IDE на основе Eclipse  
 + **en.stsw-link004.zip** - утилита взаимодействия с STM32 + дровишки 
 
 Сохранить файлы лучше подближе к корневому диску. Например, `D:\RTOS`
@@ -19,13 +19,13 @@
 
 После скачивания будьте добрый установить Java =)
 
-3. Распакуйте архив **ChibiStudio17v3_windows.zip** - это "урезанная" версия ChibiStudio, в ней меньше папочек, а именно: 
+3. Распакуйте архив **ChibiStudio20v0_windows.zip** - это "урезанная" версия ChibiStudio, в ней меньше папочек, а именно: 
 
 <p align="center">
 <img src="windows_imgs/fig_1.PNG">
 </p>
 
-- папка **chibios176** - это библиотека (framework), где располагается сама ChibiOS версии 17.6;
+- папка **chibios203* - это библиотека (framework), где располагается сама ChibiOS версии 20.3;
 - папка **eclipse** - папка *угадайте с чем? ^_^* с Eclipse (наше IDE);
 - папка **tools** - папка с инструментами для компиляции и отладки;
 - папка **templates** - папка с инструментами для компиляции и отладки;

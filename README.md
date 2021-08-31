@@ -17,23 +17,19 @@ Resources for ChibiOS on STM32 boards
 
 - [Примеры использования модулей RT+HAL](HAL_RT_samples)
 
-- Попрактиковаться с компиляцией через `make`: [ресурсы](CompilationPractise) + [видео](https://disk.yandex.ru/d/zXlk9GWmxtb1BQ)
+- Попрактиковаться с компиляцией через `make`: [видео](https://disk.yandex.ru/d/zXlk9GWmxtb1BQ)
 
 ## Useful links
 
 - [Java SE Runtime Environment](https://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html) или [гугль](http://lmgtfy.com/?q=Java+SE+Runtime+Environment)
 - [Sublime Text 3](https://www.sublimetext.com/3)
-- [ChibiStudio Original](http://www.chibios.org/dokuwiki/doku.php?id=chibios:product:chibistudio:start)
 - [ChibiOS GitHub](https://github.com/ChibiOS/ChibiOS/tree/stable_17.6.x)
 
 - [ChibiOS OffSite Articles](http://www.chibios.org/dokuwiki/doku.php?id=chibios:articles:start)
-- [ChibiOS OffSite Book](http://www.chibios.org/dokuwiki/doku.php?id=chibios:book:start)
 
 - [ChibiOS RT Docs](http://chibios.sourceforge.net/docs3/rt/) - правда более новой версии
 - [ChibiOS HAL Docs](http://chibios.sourceforge.net/docs3/hal/index.html) - правда более новой версии
 
-- [OpenOCD ChibiOS Debug](http://wiki.chibios.org/dokuwiki/doku.php?id=chibios:community:setup:openocd_chibios)
 - [OpenOCD Eclipse Debug](https://github.com/mrsin/k-lab/wiki/STM32-%D0%BF%D1%80%D0%BE%D1%88%D0%B8%D0%B2%D0%BA%D0%B0-%D1%81-%D0%BF%D0%BE%D0%BC%D0%BE%D1%89%D1%8C%D1%8E-OpenOCD-%D0%B8-%D0%BE%D1%82%D0%BB%D0%B0%D0%B4%D0%BA%D0%B0-%D0%B2-Eclipse)
 
-- [MEGA Cloud](https://mega.nz/#F!PVoDxSiS!vc3rVDdMa7lZPIfyjiOfwA)
 - [GDrive - Presentations](https://drive.google.com/drive/folders/1pf8nIiHnv9FL_8PPEM4XFpd6XeqfnDN-?usp=sharing)

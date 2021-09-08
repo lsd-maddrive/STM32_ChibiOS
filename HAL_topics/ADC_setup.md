@@ -245,6 +245,7 @@ void adcSTM32DisableVBATE(void);
 
 <details>
 <summary>Код main.c под спойлером</summary>
+	
 ```c 
 #include "ch.h"
 #include "hal.h"
@@ -325,12 +326,14 @@ int main(void) {
     }
 }
 ```
+	
 </details>
 
 Теперь посмотрим как работает `Watchdog` и добавим не единичную глубину буфера.Проект можно найти [тут](../HAL_examples/ADCv2/Sync_watchdog).
 
 <details>
 <summary>Код main.c под спойлером</summary>
+	
 ```c 
 #include "ch.h"
 #include "hal.h"
@@ -393,12 +396,14 @@ int main(void) {
     }
 }
 ```
+	
 </details>
 
 Попробуем запустить АЦП в асинхронном режиме и добавим несколько каналов. Такой режим позволяет один раз запустить чтение сигнала на ноге и в любой момент иметь возможность быстро получить актуальное значение. Проект можно найти [тут](../HAL_examples/ADCv2/Async_3_channels).
 
 <details>
 <summary>Код main.c под спойлером</summary>
+	
 ```c 
 #include "ch.h"
 #include "hal.h"
@@ -473,12 +478,14 @@ int main(void) {
     }
 }
 ```
+	
 </details>
 
 Ну, и напоследок рассмотрим вариант работы по таймеру. Проект можно найти [тут](../HAL_examples/ADCv2/Timer_sampled).
 
 <details>
 <summary>Код main.c под спойлером</summary>
+
 ```c 
 #include "ch.h"
 #include "hal.h"
@@ -583,6 +590,7 @@ int main(void) {
     }
 }
 ```
+				 
 </details>
 
 [Содержание](#content)

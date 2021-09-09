@@ -251,7 +251,7 @@ void spiReleaseBus(SPIDriver *spip);
 
 Код для платы `NUCLEO-F767ZI`.
 
-Чтение данных с гироскопа `L3GD20H` с помощью `spi` в синхронном режиме. Проект можно найти {тут](../HAL_examples/SPIv2)
+Чтение данных с гироскопа `L3GD20H` с помощью `spi` в синхронном режиме. Проект можно найти [тут](../HAL_examples/SPIv2)
 
 <details>
 <summary>Код main.c под спойлером</summary>

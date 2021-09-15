@@ -17,11 +17,11 @@ int main(void) {
     // Настраиваем ногу с лампочкой на выход
     palSetLineMode(LINE_LED3, PAL_MODE_OUTPUT_PUSHPULL);
     // А ногу с кнопкой на вход
-    palSetLineMode(GPIOC_BUTTON, PAL_MODE_INPUT_PULLDOWN);
+    palSetPadMode(GPIOC, GPIOC_BUTTON, PAL_MODE_INPUT_PULLDOWN);
     // Разрешаем прерывание, указываем callbcak функцию и передаем указатель на аргумент
-    palEnableLineEvent(GPIOC_BUTTON, PAL_EVENT_MODE_RISING_EDGE);
-    palSetLineCallback(GPIOC_BUTTON, palcb_button, &arg);
+    palEnablePadEvent(GPIOC, GPIOC_BUTTON, PAL_EVENT_MODE_RISING_EDGE);
+    palSetPadCallback(GPIOC, GPIOC_BUTTON, palcb_button, &arg);
     while (1) {
-        chThdSleepMilliseconds(1);
+        chThdSleepSeconds(1);
     }
 }

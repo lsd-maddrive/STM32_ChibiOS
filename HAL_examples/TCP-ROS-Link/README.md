@@ -12,6 +12,12 @@
   - Mask: 255.255.255.0 (или возле IP ставить суффикс "/24")
   - Gateway: 9.9.9.1
 - Если еще не стоит [ROS Noetic](http://wiki.ros.org/noetic/Installation), то поставить (катали ток на Linux, на Windows можно накатить WSL)
+  - Также, поставить пакет `rosserial-server`
+
+    ```bash
+    sudo apt install ros-noetic-rosserial-server
+    ```
+
 - Находясь в директории рядом с ридми (этим файлом) запустить Socket сервер для ROS
 
 ```bash

@@ -1,8 +1,11 @@
-
 set BIN="%~dp0/build/ch.bin"
-set "BIN=%BIN:\=/%"
 
-openocd -s "%CHIBISTUDIO%/tools/openocd/scripts" -f board/st_nucleo_f7.cfg -c "program %BIN% reset exit 0x08000000"
+:: Full memory erase
+st-link_cli -ME
+:: Load ch.bin file from /build folder to memory 
+st-link_cli -P %BIN% 0x08000000
+:: Reset program to start execution
+st-link_cli -Rst
 
 :pause
 sleep 2

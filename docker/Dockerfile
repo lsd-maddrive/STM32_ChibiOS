@@ -12,9 +12,11 @@ ENV CHIBIOS_ARCHIVE_FNAME=ChibiOS_20.3.4.7z
 RUN wget -O $CHIBIOS_ARCHIVE_FNAME \
     https://osdn.net/frs/redir.php?m=rwthaachen\&f=chibios%2F72607%2F$CHIBIOS_ARCHIVE_FNAME \
     && 7z x $CHIBIOS_ARCHIVE_FNAME \
-    && rm $CHIBIOS_ARCHIVE_FNAME
-
-RUN mv ChibiOS_20.3.4 chibios
+    && rm $CHIBIOS_ARCHIVE_FNAME \
+    && mv ChibiOS_20.3.4 chibios \
+    && 7z x chibios/ext/lwip-2.1.2.7z -ochibios/ext/ \
+    && 7z x chibios/ext/fatfs-0.14_patched.7z -ochibios/ext/
+# TODO - remove unpacked archives
 
 FROM debian:stable-20220912-slim
 
